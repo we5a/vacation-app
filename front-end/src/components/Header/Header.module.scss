@@ -1,0 +1,24 @@
+.container {
+  background-color: #e0f2f1;
+}
+
+.header {
+  padding: 8px 16px;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+
+  .appLogo {
+    margin: 0;
+  }
+}
+
+.userBlock {
+  display: flex;
+  align-items: center;
+
+  &__email {
+    margin-right: 8px;
+  }
+}

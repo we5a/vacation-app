@@ -1,0 +1,25 @@
+.applicationBlock {
+  max-width: 320px;
+  padding: 0px 8px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    margin: 16px auto;
+  }
+
+  .datePicker {
+    margin: 8px 0;
+  }
+
+  .sendButton {
+    margin: 24px auto;
+    align-self: center;
+  }
+
+}
+
+.backButton {
+  margin: 8px 0;
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {type FC, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "assets/images/vacation.png";
 import styles from "./Login.module.scss";
 
-const Login = () => {
+const Login: FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

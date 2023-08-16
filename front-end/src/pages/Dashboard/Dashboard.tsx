@@ -1,19 +1,34 @@
-import React from "react";
-import styles from "./Dashboard.module.scss";
+import { type FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { Header } from "components";
+import { Button } from "@mui/material";
 
-const Dashboard = () => {
+import styles from "./Dashboard.module.scss";
+
+const Dashboard: FC = () => {
+  const navigate = useNavigate();
+
+  const handleRequest = () => {
+    navigate("/request");
+  };
+
   return (
     <div className={styles.dashboard}>
-      <Header />
-      Your vacations here
-      
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DateCalendar />
       </LocalizationProvider>
+
+      <div className={styles.requested}>Your list is empty</div>
+
+      <Button
+        variant="contained"
+        onClick={handleRequest}
+        classes={{ root: styles.requestButton }}
+      >
+        Request
+      </Button>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-import { type FC, useState } from "react";
+import { type FC, useState, useId } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -8,15 +8,31 @@ import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import IconButton from "@mui/material/IconButton";
 
+import { useAppDispatch } from "hooks/hooks";
+import { addVacation } from "store/vacationSlice";
 import styles from "./Request.module.scss";
 
 const Request: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const id = useId();
   const [startDate, setStartDate] = useState<Dayjs | null>();
   const [endDate, setEndDate] = useState<Dayjs | null>();
 
   const handleSendRequest = () => {
     if (startDate && endDate) {
+      dispatch(
+        addVacation({
+          id,
+          startDate: startDate.toISOString(),
+          endDate: endDate.toISOString(),
+          type: "vacation",
+          status: "pending",
+        }),
+      );
+
+      setStartDate(null);
+      setEndDate(null);
       navigate("/dashboard");
     }
   };
@@ -27,7 +43,11 @@ const Request: FC = () => {
 
   return (
     <div>
-      <IconButton onClick={goBack} className={styles.backButton} color="primary">
+      <IconButton
+        onClick={goBack}
+        className={styles.backButton}
+        color="primary"
+      >
         <ArrowBackIcon />
       </IconButton>
 
@@ -37,6 +57,7 @@ const Request: FC = () => {
           <DatePicker
             label="Start date"
             value={startDate}
+            defaultValue={dayjs("2020-04-17")}
             onChange={(newValue) => setStartDate(newValue)}
             className={styles.datePicker}
           />
@@ -44,6 +65,7 @@ const Request: FC = () => {
           <DatePicker
             label="End date"
             value={endDate}
+            defaultValue={dayjs("2020-04-17")}
             onChange={(newValue) => setEndDate(newValue)}
             className={styles.datePicker}
           />

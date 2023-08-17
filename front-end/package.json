@@ -26,9 +26,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
     "eject": "react-scripts eject"
@@ -52,8 +52,10 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "3.0.1",
-    "sass": "^1.65.1"
+    "sass": "^1.65.1",
+    "sass-resources-loader": "^2.2.5"
   }
 }

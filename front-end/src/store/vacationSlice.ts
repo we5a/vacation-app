@@ -1,17 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
-
-type VacationStatus = "pending" | "approved" | "declined";
-type VacationType = "vacation" | "day-off";
-
-interface Vacation {
-  id: string;
-  startDate: string;
-  endDate: string;
-  status: VacationStatus;
-  type: VacationType;
-}
+import type { Vacation, VacationStatus } from "./types/vacation";
 
 interface VacationState {
   organizationId: string;
@@ -42,12 +32,13 @@ export const vacationSlice = createSlice({
       });
     },
     removeVacation: (state, action: PayloadAction<string>) => {
-      const index = state.vacations.findIndex(v => v.id === action.payload);
+      const index = state.vacations.findIndex((v) => v.id === action.payload);
       state.vacations.splice(index, 1);
-    }
+    },
   },
 });
 
-export const { addVacation, changeVacationStatus, removeVacation } = vacationSlice.actions;
+export const { addVacation, changeVacationStatus, removeVacation } =
+  vacationSlice.actions;
 //
 export default vacationSlice.reducer;

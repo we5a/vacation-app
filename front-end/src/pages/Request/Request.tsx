@@ -1,5 +1,6 @@
 import { type FC, useState, useId } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import moment from "moment";
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,11 +14,19 @@ import { addVacation } from "store/vacationSlice";
 import styles from "./Request.module.scss";
 
 const Request: FC = () => {
+  const DAYS_DELTA = 1;
   const navigate = useNavigate();
+  const { state: vacationType } = useLocation();
   const dispatch = useAppDispatch();
   const id = useId();
-  const [startDate, setStartDate] = useState<Dayjs | null>();
-  const [endDate, setEndDate] = useState<Dayjs | null>();
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    setInitialPickerDate,
+  );
+  const [endDate, setEndDate] = useState<Dayjs | null>(setInitialPickerDate);
+
+  function setInitialPickerDate() {
+    return dayjs(moment().add(DAYS_DELTA, "days").format("YYYY-MM-DD"));
+  }
 
   const handleSendRequest = () => {
     if (startDate && endDate) {
@@ -52,12 +61,11 @@ const Request: FC = () => {
       </IconButton>
 
       <div className={styles.applicationBlock}>
-        <h3>Request new vacation</h3>
+        <h3>Request new {vacationType.label || "Vacation"}</h3>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Start date"
             value={startDate}
-            defaultValue={dayjs("2020-04-17")}
             onChange={(newValue) => setStartDate(newValue)}
             className={styles.datePicker}
           />
@@ -65,7 +73,6 @@ const Request: FC = () => {
           <DatePicker
             label="End date"
             value={endDate}
-            defaultValue={dayjs("2020-04-17")}
             onChange={(newValue) => setEndDate(newValue)}
             className={styles.datePicker}
           />

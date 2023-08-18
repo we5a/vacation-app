@@ -26,7 +26,6 @@ const VacationDialog: FC<VacationDialogProps> = ({
   return (
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>Vacation type:</DialogTitle>
-
       <List>
         {items.map((item: VacationItem) => {
           return (

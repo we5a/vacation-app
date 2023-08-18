@@ -6,7 +6,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { Button } from "@mui/material";
 
 import { useAppSelector } from "hooks/hooks";
-import { VacationDialog } from "components";
+import { VacationDialog, VacationItem, VacationList } from "components";
 import styles from "./Dashboard.module.scss";
 
 const items = [
@@ -39,18 +39,7 @@ const Dashboard: FC = () => {
       </LocalizationProvider>
 
       <div className={styles.requested}>
-        {!vacations.length && <span>Your list is empty</span>}
-        {vacations.map((v) => {
-          return (
-            <div key={v.id}>
-              <span>{v.startDate?.toString()}</span>
-              <span>{v.endDate?.toString()}</span> &nbsp;
-              <span>{v.type}</span>&nbsp;
-              <span>{v.status}</span>
-              <hr />
-            </div>
-          );
-        })}
+        <VacationList items={vacations} />
       </div>
 
       <Button
@@ -58,7 +47,7 @@ const Dashboard: FC = () => {
         onClick={handleRequest}
         classes={{ root: styles.requestButton }}
       >
-        Request
+        Book time off
       </Button>
 
       <VacationDialog

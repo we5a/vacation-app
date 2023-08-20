@@ -1,10 +1,15 @@
-import { type FC, useState, useCallback } from "react";
+import { type FC, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
 
 import { useAppSelector } from "hooks/hooks";
-import { VacationDialog, VacationItem, VacationList } from "components";
+import {
+  VacationDialog,
+  VacationItem,
+  VacationList,
+  VacationCards,
+} from "components";
 import styles from "./Dashboard.module.scss";
 
 const items = [
@@ -16,6 +21,17 @@ const Dashboard: FC = () => {
   const navigate = useNavigate();
   const vacations = useAppSelector((state) => state.vacations.vacations);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
+  const marked = useMemo(() => {
+    return vacations.map((el) => {
+      return {
+        from: new Date(el.startDate),
+        to: new Date(el.endDate),
+        middayCheckout: false,
+      };
+    });
+  }, [vacations]);
 
   const handleRequest = () => {
     setIsDialogOpen(true);
@@ -32,19 +48,15 @@ const Dashboard: FC = () => {
 
   return (
     <div className={styles.dashboard}>
-      <div style={{ border: "1px dotted orange" }}>
-        <Calendar
-          showKey={false}
-          bookings={[
-            {
-              from: new Date("2023-07-03"),
-              to: new Date("2023-07-30"),
-              middayCheckout: false,
-            },
-          ]}
-        />
-      </div>
-
+      <VacationCards
+        isCalendarOpen={isCalendarOpen}
+        setIsCalendarOpen={setIsCalendarOpen}
+      />
+      {isCalendarOpen && (
+        <div className={styles.calendarBlock}>
+          <Calendar showKey={false} bookings={marked} />
+        </div>
+      )}
       <div className={styles.requested}>
         <VacationList items={vacations} />
       </div>

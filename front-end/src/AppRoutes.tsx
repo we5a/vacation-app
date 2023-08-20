@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login, Dashboard, Request } from "pages";
+import { Login, Dashboard, Request, Organization } from "pages";
 import { Layout } from "components";
 
 const AppRoutes = () => {
@@ -10,6 +10,7 @@ const AppRoutes = () => {
       <Route element={<Layout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/request" element={<Request />} />
+        <Route path="/organization" element={<Organization />} />
       </Route>
     </Routes>
   );

@@ -23,11 +23,15 @@ const Header: FC = () => {
     navigate("/login");
   };
 
+  const handleOrganization = () => {
+    navigate("/organization");
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.appLogo}>Vacations</h2>
-
+        <h4 className={styles.organization} onClick={handleOrganization}>Your organization name</h4>
         <div className={styles.userBlock} onClick={handleClick}>
           <span className={styles.userBlock__email}>user@email.com</span>
           <AccountCircleIcon />

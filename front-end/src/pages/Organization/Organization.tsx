@@ -1,7 +1,7 @@
 import styles from "./Organization.module.scss";
 
 const Organization = () => {
-  return <div>Organization</div>;
+  return <div>Organization table</div>;
 };
 
 export default Organization;

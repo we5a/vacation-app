@@ -4,12 +4,7 @@ import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
 
 import { useAppSelector } from "hooks/hooks";
-import {
-  VacationDialog,
-  VacationItem,
-  VacationList,
-  VacationCards,
-} from "components";
+import { VacationDialog, VacationList, VacationCards } from "components";
 import styles from "./Dashboard.module.scss";
 
 const items = [

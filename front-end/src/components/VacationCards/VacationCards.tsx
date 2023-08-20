@@ -15,8 +15,8 @@ const VacationCards: FC<VacationCardsProps> = ({
   const timesOffMap = [
     {
       type: "Vacation:",
-      available: 5,
-      booked: 15,
+      available: 5, // difference between awailable for role and booked
+      booked: 15, // sum of all booked durations
     },
     {
       type: "Day off:",

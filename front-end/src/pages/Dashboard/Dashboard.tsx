@@ -1,9 +1,7 @@
 import { type FC, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { Button } from "@mui/material";
+import Calendar from "reactjs-availability-calendar";
 
 import { useAppSelector } from "hooks/hooks";
 import { VacationDialog, VacationItem, VacationList } from "components";
@@ -34,9 +32,18 @@ const Dashboard: FC = () => {
 
   return (
     <div className={styles.dashboard}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar />
-      </LocalizationProvider>
+      <div style={{ border: "1px dotted orange" }}>
+        <Calendar
+          showKey={false}
+          bookings={[
+            {
+              from: new Date("2023-07-03"),
+              to: new Date("2023-07-30"),
+              middayCheckout: false,
+            },
+          ]}
+        />
+      </div>
 
       <div className={styles.requested}>
         <VacationList items={vacations} />

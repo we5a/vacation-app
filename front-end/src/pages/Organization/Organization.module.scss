@@ -1,0 +1,37 @@
+.header {
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actionsBlock {
+  display: flex;
+  gap: 12px;
+}
+
+.listTitle {
+  text-align: center;
+}
+
+.pageTitle {
+  font-size: 18px;
+}
+
+.link {
+  color: $indigo600;
+  text-decoration: none;
+  font-size: 18px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.requestTable {
+  margin-top: 16px;
+
+  .cellContent {
+    overflow-wrap: normal;
+  }
+}

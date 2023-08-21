@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.02318b49.css",
-    "main.js": "/react-gh-pages/static/js/main.24932c85.js",
-    "static/js/988.95e9a954.chunk.js": "/react-gh-pages/static/js/988.95e9a954.chunk.js",
-    "static/media/vacation.png": "/react-gh-pages/static/media/vacation.f462cb421537b6f70198.png",
-    "index.html": "/react-gh-pages/index.html",
-    "main.02318b49.css.map": "/react-gh-pages/static/css/main.02318b49.css.map",
-    "main.24932c85.js.map": "/react-gh-pages/static/js/main.24932c85.js.map",
-    "988.95e9a954.chunk.js.map": "/react-gh-pages/static/js/988.95e9a954.chunk.js.map"
+    "main.css": "/vacation-app/static/css/main.02318b49.css",
+    "main.js": "/vacation-app/static/js/main.ddb25233.js",
+    "static/js/988.95e9a954.chunk.js": "/vacation-app/static/js/988.95e9a954.chunk.js",
+    "static/media/vacation.png": "/vacation-app/static/media/vacation.f462cb421537b6f70198.png",
+    "index.html": "/vacation-app/index.html",
+    "main.02318b49.css.map": "/vacation-app/static/css/main.02318b49.css.map",
+    "main.ddb25233.js.map": "/vacation-app/static/js/main.ddb25233.js.map",
+    "988.95e9a954.chunk.js.map": "/vacation-app/static/js/988.95e9a954.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.02318b49.css",
-    "static/js/main.24932c85.js"
+    "static/js/main.ddb25233.js"
   ]
 }

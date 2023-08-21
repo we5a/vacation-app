@@ -20,8 +20,8 @@ const initialState: UserState | null = {
   email: "user@mail.com",
   role: "worker",
   availabilityOfTimeOff: {
-    vacation: 20,
-    dayOff: 10,
+    vacation: 25,
+    dayOff: 15,
   },
 };
 

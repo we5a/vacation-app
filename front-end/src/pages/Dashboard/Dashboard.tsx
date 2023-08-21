@@ -2,6 +2,7 @@ import { type FC, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
+import moment from "moment";
 
 import { useAppSelector } from "hooks/hooks";
 import { VacationDialog, VacationList, VacationCards } from "components";
@@ -15,6 +16,7 @@ const items = [
 const Dashboard: FC = () => {
   const navigate = useNavigate();
   const vacations = useAppSelector((state) => state.vacations.vacations);
+  const user = useAppSelector((state) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
@@ -27,6 +29,38 @@ const Dashboard: FC = () => {
       };
     });
   }, [vacations]);
+
+  const timesOffData = useMemo(() => {
+    const {
+      availabilityOfTimeOff: { vacation, dayOff },
+    } = user;
+
+    const bookedDurations = vacations.reduce(
+      (acc, el) => {
+        const { type, endDate, startDate } = el;
+        const durationInDays = moment(endDate).diff(moment(startDate), "days");
+        acc[type] = acc[type] + durationInDays;
+        return acc;
+      },
+      { vacation: 0, "day-off": 0 },
+    );
+
+    const { vacation: bookedVacations, ["day-off"]: bookedDaysOffs } =
+      bookedDurations;
+
+    return [
+      {
+        type: "Vacation:",
+        available: vacation - bookedVacations,
+        booked: bookedVacations,
+      },
+      {
+        type: "Day off:",
+        available: dayOff - bookedDaysOffs,
+        booked: bookedDaysOffs,
+      },
+    ];
+  }, [vacations, user]);
 
   const handleRequest = () => {
     setIsDialogOpen(true);
@@ -44,6 +78,7 @@ const Dashboard: FC = () => {
   return (
     <div className={styles.dashboard}>
       <VacationCards
+        timesOffData={timesOffData}
         isCalendarOpen={isCalendarOpen}
         setIsCalendarOpen={setIsCalendarOpen}
       />

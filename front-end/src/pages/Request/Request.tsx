@@ -35,7 +35,7 @@ const Request: FC = () => {
           id,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
-          type: "vacation",
+          type: vacationType.value,
           status: "pending",
         }),
       );
@@ -65,6 +65,7 @@ const Request: FC = () => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Start date"
+            disablePast
             value={startDate}
             onChange={(newValue) => setStartDate(newValue)}
             className={styles.datePicker}
@@ -72,6 +73,7 @@ const Request: FC = () => {
 
           <DatePicker
             label="End date"
+            disablePast
             value={endDate}
             onChange={(newValue) => setEndDate(newValue)}
             className={styles.datePicker}

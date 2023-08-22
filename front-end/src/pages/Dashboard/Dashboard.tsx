@@ -13,7 +13,6 @@ import {
 import styles from "./Dashboard.module.scss";
 
 const Dashboard: FC = () => {
-  const navigate = useNavigate();
   const vacations = useAppSelector((state) => state.vacations.vacations);
   const user = useAppSelector((state) => state.user);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);

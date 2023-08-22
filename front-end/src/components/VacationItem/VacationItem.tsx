@@ -8,6 +8,8 @@ import { useAppDispatch } from "hooks/hooks";
 import type { Vacation } from "store/types/vacation";
 import styles from "./VacationItem.module.scss";
 import { Box } from "@mui/system";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
 interface VacationItemProps {
   item: Vacation;
@@ -21,7 +23,7 @@ const statusColorMap = {
 };
 
 const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
-  const {id, status, type, endDate, startDate } = item;
+  const { id, status, type, endDate, startDate } = item;
   const dispatch = useAppDispatch();
 
   const humanizeDate = (date: string) => {
@@ -32,24 +34,54 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
     dispatch(removeVacation(id));
   };
 
-  return (<>
-  <Box sx={{ display: { xs: "none", sm: "block" } }}>
-    <div className={styles.vacationItem}>
-      <span>{number}.</span>
+  const deleteButton = (
+    <IconButton onClick={onDelete} sx={{ ml: { xs: 4 } }}>
+      <DeleteIcon />
+    </IconButton>
+  );
+
+  const dateBlock = (
+    <>
+      <b>{number}.&nbsp;</b>
       <span>{humanizeDate(startDate)}</span>
       <span>-</span>
       <span>{humanizeDate(endDate)}</span>
-      <Chip label={type} size="small" color="info" />
-      <Chip label={status} size="small" color={statusColorMap[status] as any} />
-      <IconButton onClick={onDelete}>
-        <DeleteIcon />
-      </IconButton>
-    </div>
-  </Box>
-  <Box sx={{ display: { xs: "block", sm: "none" } }}>
-    mobile view
-  </Box>
-  </>
+    </>
+  );
+
+  return (
+    <>
+      <Box sx={{ display: { xs: "none", sm: "block" } }}>
+        <div className={styles.vacationItem}>
+          {dateBlock}
+          <Chip label={type} size="small" color="info" />
+          <Chip
+            label={status}
+            size="small"
+            color={statusColorMap[status] as any}
+          />
+          {deleteButton}
+        </div>
+      </Box>
+      <Box sx={{ display: { xs: "block", sm: "none" } }}>
+        <Card variant="outlined" sx={{ mb: 2 }}>
+          <CardContent className={styles.mobile}>
+            <div>
+              <div className={styles.firstRow}>{dateBlock}</div>
+              <div className={styles.secondRow}>
+                <Chip label={type} size="small" color="info" />
+                <Chip
+                  label={status}
+                  size="small"
+                  color={statusColorMap[status] as any}
+                />
+              </div>
+            </div>
+            {deleteButton}
+          </CardContent>
+        </Card>
+      </Box>
+    </>
   );
 };
 

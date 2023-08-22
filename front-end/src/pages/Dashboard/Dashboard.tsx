@@ -5,11 +5,7 @@ import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
 import { useAppSelector } from "hooks/hooks";
-import {
-  VacationList,
-  VacationCards,
-  DatePickerDialog,
-} from "components";
+import { VacationList, VacationCards, DatePickerDialog } from "components";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard: FC = () => {
@@ -65,7 +61,7 @@ const Dashboard: FC = () => {
         available: 0,
         booked: 0,
         disabled: true,
-      }
+      },
     ];
   }, [vacations, user]);
 
@@ -87,11 +83,7 @@ const Dashboard: FC = () => {
         timesOffData={timesOffData}
         handleVacationRequest={handleVacationRequest}
       />
-      {isCalendarOpen && (
-        <div className={styles.calendarBlock}>
-          <Calendar showKey={false} bookings={marked} />
-        </div>
-      )}
+
       <div className={styles.requested}>
         <VacationList items={vacations} />
       </div>
@@ -99,6 +91,12 @@ const Dashboard: FC = () => {
       <Button variant="contained" size="medium" onClick={handleCalendar}>
         {isCalendarOpen ? "Hide Calendar" : "Show Calendar"}
       </Button>
+
+      {isCalendarOpen && (
+        <div className={styles.calendarBlock}>
+          <Calendar showKey={false} bookings={marked} />
+        </div>
+      )}
 
       <DatePickerDialog
         open={isDialogOpen}

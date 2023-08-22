@@ -6,3 +6,20 @@
   align-items: center;
   gap: 16px;
 }
+
+.available {
+  margin-bottom: 6px;
+}
+
+.disabled {
+  opacity: 0.7;
+  user-select: none;
+}
+
+.actions {
+  height: 20px;
+  margin-top: 12px;
+  display: flex;
+  justify-self: center;
+  justify-content: center;
+}

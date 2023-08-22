@@ -5,13 +5,12 @@ import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
 import { useAppSelector } from "hooks/hooks";
-import { VacationDialog, VacationList, VacationCards } from "components";
+import {
+  VacationList,
+  VacationCards,
+  DatePickerDialog,
+} from "components";
 import styles from "./Dashboard.module.scss";
-
-const items = [
-  { label: "Vacation", value: "vacation" },
-  { label: "Day off", value: "day-off" },
-];
 
 const Dashboard: FC = () => {
   const navigate = useNavigate();
@@ -53,16 +52,18 @@ const Dashboard: FC = () => {
         type: "Vacation:",
         available: vacation - bookedVacations,
         booked: bookedVacations,
+        disabled: false,
       },
       {
         type: "Day off:",
         available: dayOff - bookedDaysOffs,
         booked: bookedDaysOffs,
+        disabled: true,
       },
     ];
   }, [vacations, user]);
 
-  const handleRequest = () => {
+  const handleVacationRequest = () => {
     setIsDialogOpen(true);
   };
 
@@ -70,17 +71,15 @@ const Dashboard: FC = () => {
     setIsDialogOpen(false);
   }, []);
 
-  const handleVacationSelect = useCallback((selectedItem: any) => {
-    navigate("/request", { state: selectedItem });
-    setIsDialogOpen(false);
-  }, []);
+  const handleCalendar = () => {
+    setIsCalendarOpen((prev: boolean) => !prev);
+  };
 
   return (
     <div className={styles.dashboard}>
       <VacationCards
         timesOffData={timesOffData}
-        isCalendarOpen={isCalendarOpen}
-        setIsCalendarOpen={setIsCalendarOpen}
+        handleVacationRequest={handleVacationRequest}
       />
       {isCalendarOpen && (
         <div className={styles.calendarBlock}>
@@ -91,19 +90,14 @@ const Dashboard: FC = () => {
         <VacationList items={vacations} />
       </div>
 
-      <Button
-        variant="contained"
-        onClick={handleRequest}
-        classes={{ root: styles.requestButton }}
-      >
-        Book time off
+      <Button variant="contained" size="medium" onClick={handleCalendar}>
+        {isCalendarOpen ? "Hide Calendar" : "Show Calendar"}
       </Button>
 
-      <VacationDialog
+      <DatePickerDialog
         open={isDialogOpen}
         onClose={handleDialogClose}
-        onSelect={handleVacationSelect}
-        items={items}
+        title={"Request new Vacation"}
       />
     </div>
   );

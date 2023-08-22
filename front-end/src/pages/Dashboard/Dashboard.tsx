@@ -56,10 +56,17 @@ const Dashboard: FC = () => {
       },
       {
         type: "Day off:",
-        available: dayOff - bookedDaysOffs,
+        // available: dayOff - bookedDaysOffs,
+        available: 0,
         booked: bookedDaysOffs,
         disabled: true,
       },
+      {
+        type: "Sickness",
+        available: 0,
+        booked: 0,
+        disabled: true,
+      }
     ];
   }, [vacations, user]);
 

@@ -5,13 +5,14 @@ import {
   CardActions,
   Typography,
   Button,
+  Grid,
 } from "@mui/material";
 import cn from "classnames";
 
 import styles from "./VacationCards.module.scss";
 
 interface VacationCardsProps {
-  handleVacationRequest: () => void,
+  handleVacationRequest: () => void;
   timesOffData: {
     type: string;
     available: number;
@@ -20,49 +21,59 @@ interface VacationCardsProps {
   }[];
 }
 
-const VacationCards: FC<VacationCardsProps> = ({ timesOffData, handleVacationRequest }) => {
-
+const VacationCards: FC<VacationCardsProps> = ({
+  timesOffData,
+  handleVacationRequest,
+}) => {
   return (
-    <div className={styles.cardBlock}>
+    <Grid
+      container
+      sx={{ m: 2 }}
+      columnSpacing={3}
+      rowGap={3}
+      justifyContent={"center"}
+    >
       {timesOffData.map((item) => {
         const isDisabled = item.disabled || false;
         return (
-          <Card
-            sx={{ minWidth: 220 }}
-            key={item.type}
-            className={cn({ [styles.disabled]: isDisabled })}
-          >
-            <CardContent>
-              <Typography color="text.secondary" gutterBottom>
-                {item.type}
-              </Typography>
-              <Typography
-                variant="body1"
-                color="text.primary"
-                className={styles.available}
-              >
-                Available: {item.available}
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                Booked: {item.booked}
-              </Typography>
-
-              <CardActions className={styles.actions}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  disabled={isDisabled}
-                  className={styles.bookButton}
-                  onClick={handleVacationRequest}
+          <Grid item xs={7} md={4} lg={3}>
+            <Card
+              sx={{ minWidth: 220 }}
+              key={item.type}
+              className={cn({ [styles.disabled]: isDisabled })}
+            >
+              <CardContent>
+                <Typography color="text.secondary" gutterBottom>
+                  {item.type}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.primary"
+                  className={styles.available}
                 >
-                  Book
-                </Button>
-              </CardActions>
-            </CardContent>
-          </Card>
+                  Available: {item.available}
+                </Typography>
+                <Typography variant="body1" color="text.primary">
+                  Booked: {item.booked}
+                </Typography>
+
+                <CardActions className={styles.actions}>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    disabled={isDisabled}
+                    className={styles.bookButton}
+                    onClick={handleVacationRequest}
+                  >
+                    Book
+                  </Button>
+                </CardActions>
+              </CardContent>
+            </Card>
+          </Grid>
         );
       })}
-    </div>
+    </Grid>
   );
 };
 

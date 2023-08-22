@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login, Dashboard, Request, Organization } from "pages";
+import { Login, Dashboard, Organization } from "pages";
 import { Layout } from "components";
 
 const AppRoutes = () => {
@@ -9,7 +9,6 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route element={<Layout />}>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/request" element={<Request />} />
         <Route path="/organization" element={<Organization />} />
       </Route>
     </Routes>

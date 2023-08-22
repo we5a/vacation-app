@@ -55,7 +55,7 @@ const Header: FC = () => {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
           <span className={styles.userBlock__email}>{user.email}</span>
           </Box>
-          <AccountCircleIcon className={styles.userBlock__icon} />
+          <AccountCircleIcon className={styles.userIcon} />
         </div>
         <Menu
           anchorEl={anchorEl}

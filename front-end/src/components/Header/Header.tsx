@@ -7,11 +7,14 @@ import LogoIcon from "assets/images/logo64.png";
 import { Box } from "@mui/system";
 
 import styles from "./Header.module.scss";
+import { useAppSelector } from "hooks/hooks";
+import { googleLogout } from "@react-oauth/google";
 
 const Header: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state.user);
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -22,6 +25,7 @@ const Header: FC = () => {
   };
 
   const handleLogout = () => {
+    googleLogout();
     navigate("/login");
   };
 
@@ -49,7 +53,7 @@ const Header: FC = () => {
         </h4>
         <div className={styles.userBlock} onClick={handleClick}>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          <span className={styles.userBlock__email}>user@email.com</span>
+          <span className={styles.userBlock__email}>{user.email}</span>
           </Box>
           <AccountCircleIcon className={styles.userBlock__icon} />
         </div>

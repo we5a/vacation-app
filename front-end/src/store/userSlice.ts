@@ -3,20 +3,22 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string,
+  given_name: string;
+  family_name: string;
   email: string;
-  role: string;
-  availabilityOfTimeOff: {
+  role?: string;
+  availabilityOfTimeOff?: {
     vacation: number;
     dayOff: number;
   };
 }
 
-const initialState: UserState | null = {
+export const initialState: UserState | null = {
   id: "vbn",
-  firstName: "",
-  lastName: "",
+  name: "",
+  given_name: "",
+  family_name: "",
   email: "user@mail.com",
   role: "worker",
   availabilityOfTimeOff: {
@@ -30,7 +32,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {
-      state = action.payload;
+      return {...state, ...action.payload};
     },
     deleteUser: (state) => {
       (state as unknown as null) = null;

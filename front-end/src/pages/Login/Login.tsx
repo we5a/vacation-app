@@ -5,14 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 import Logo from "assets/images/vacation.png";
 import styles from "./Login.module.scss";
+import LoginWithGoogle from "./LoginWithGoogle";
+import { useAppDispatch } from "hooks/hooks";
+import { setUser } from "store/userSlice";
 
 const Login: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignIn = () => {
     if (email && password) {
+      const user = {
+        id: "123",
+        name: "John Snow",
+        given_name: "John",
+        family_name: "Snow",
+        email,
+      }
+      dispatch(setUser(user));
       navigate("/dashboard");
     }
   };
@@ -47,6 +59,9 @@ const Login: FC = () => {
         <Button variant="contained" onClick={handleSignIn}>
           Sign In
         </Button>
+      </div>
+      <div className={styles.buttons}>
+        <LoginWithGoogle />
       </div>
       <p className={styles.signUpLine}>
         Don't have account yet? <a href="#">Create one</a>

@@ -31,7 +31,7 @@ const Dashboard: FC = () => {
 
   const timesOffData = useMemo(() => {
     const {
-      availabilityOfTimeOff: { vacation, dayOff },
+      availabilityOfTimeOff: { vacation, dayOff } = { vacation: 0, dayOff: 0 },
     } = user;
 
     const bookedDurations = vacations.reduce(

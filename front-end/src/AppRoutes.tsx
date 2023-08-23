@@ -4,8 +4,8 @@ import { Layout } from "components";
 import { useAppSelector } from "hooks/hooks";
 
 const PrivateRoute = ({ children }: { children: JSX.Element}): JSX.Element => {
-  const user = useAppSelector((state) => state.user);
-  return user?.email ? children : <Navigate to="/login" />;
+  const isAuthorithed = useAppSelector((state) => state.user)?.email;
+  return isAuthorithed ? children : <Navigate to="/login" />;
 };
 
 const AppRoutes = () => {

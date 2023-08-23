@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
-
-type Nullable<T> = T | undefined | null;
 interface UserInfo {
   id: string;
   name: string,
@@ -33,10 +31,10 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserInfo>) => {
-      state = action.payload;
+      return { ...state, ...action.payload };
     },
-    deleteUser: (state: Nullable<UserInfo>) => {
-      state = null;
+    deleteUser: () => {
+      return initialState;
     },
   },
 });

@@ -37,7 +37,7 @@ const Header: FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          <h2 className={styles.appLogo__text}>Vacations</h2>
+          <h2 className={styles.appLogo__text}>Vaca</h2>
         </Box>
 
         <Box sx={{ display: { xs: "block", sm: "none" } }}>

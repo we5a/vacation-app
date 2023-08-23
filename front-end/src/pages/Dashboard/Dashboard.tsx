@@ -57,7 +57,7 @@ const Dashboard: FC = () => {
         disabled: true,
       },
       {
-        type: "Sickness",
+        type: "Sickness:",
         available: 0,
         booked: 0,
         disabled: true,

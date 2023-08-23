@@ -5,14 +5,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
 import styles from "./Header.module.scss";
-import { useAppSelector } from "hooks/hooks";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { googleLogout } from "@react-oauth/google";
+import { deleteUser } from "store/userSlice";
 
 const Header: FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -23,6 +25,7 @@ const Header: FC = () => {
   };
 
   const handleLogout = () => {
+    dispatch(deleteUser());
     googleLogout();
     navigate("/login");
   };
@@ -37,7 +40,7 @@ const Header: FC = () => {
         <h2 className={styles.appLogo}>Vacations</h2>
         <h4 className={styles.organization} onClick={handleOrganization}>Your organization name</h4>
         <div className={styles.userBlock} onClick={handleClick}>
-          <span className={styles.userBlock__email}>{user.email}</span>
+          <span className={styles.userBlock__email}>{user && user?.email}</span>
           <AccountCircleIcon />
         </div>
         <Menu

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-interface UserState {
+type Nullable<T> = T | undefined | null;
+interface UserInfo {
   id: string;
   name: string,
   given_name: string;
@@ -14,12 +15,12 @@ interface UserState {
   };
 }
 
-export const initialState: UserState | null = {
-  id: "vbn",
+export const initialState: UserInfo = {
+  id: "",
   name: "",
   given_name: "",
   family_name: "",
-  email: "user@mail.com",
+  email: "",
   role: "worker",
   availabilityOfTimeOff: {
     vacation: 25,
@@ -31,11 +32,11 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      return {...state, ...action.payload};
+    setUser: (state, action: PayloadAction<UserInfo>) => {
+      state = action.payload;
     },
-    deleteUser: (state) => {
-      (state as unknown as null) = null;
+    deleteUser: (state: Nullable<UserInfo>) => {
+      state = null;
     },
   },
 });

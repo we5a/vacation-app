@@ -11,7 +11,14 @@
   align-items: center;
 
   .appLogo {
-    margin: 0;
+    &__text {
+      margin: 0;
+    }
+
+    &__icon {
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .organization {
@@ -33,5 +40,10 @@
 
   &__email {
     margin-right: 8px;
+  }
+
+  svg.userIcon {
+    width: 32px;
+    height: 32px;
   }
 }

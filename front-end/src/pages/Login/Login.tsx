@@ -1,4 +1,4 @@
-import {type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,8 @@ import Logo from "assets/images/vacation.png";
 import styles from "./Login.module.scss";
 import LoginWithGoogle from "./LoginWithGoogle";
 import { useAppDispatch } from "hooks/hooks";
-import { setUser } from "store/userSlice";
+import { UserInfo, setUser } from "store/userSlice";
+import { getUsers } from "services/api";
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -15,26 +16,34 @@ const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignIn = () => {
-    if (email && password) {
-      const user = {
-        id: "123",
-        name: "John Snow",
-        given_name: "John",
-        family_name: "Snow",
-        email,
-      }
+  useEffect(() => {
+    getUsers().then((res) => console.log(res));
+  }, []);
+
+  const handleSignIn = async () => {
+    if (!email) {
+      alert("Please enter email");
+      return;
+    }
+    const users = await getUsers();
+    const user = users.find((user: UserInfo) => user.email === email);
+    if (user) {
       dispatch(setUser(user));
-      navigate("/dashboard");
+      if (user.role === "MANAGER") {
+        navigate("/organization");
+      } else {
+        navigate("/dashboard");
+      }
+    } else {
+      alert("User not found");
     }
   };
 
   return (
     <div className={styles.login}>
       <img className={styles.logo} src={Logo} alt="logo" />
-      {/* functionality for POST MVP */}
-      
-      {/* <TextField
+
+      <TextField
         className={styles.input}
         id="standard-email-input"
         label="Email"
@@ -44,7 +53,9 @@ const Login: FC = () => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setEmail(e.target.value);
         }}
-      /> */}
+        required
+      />
+      {/* functionality for POST MVP */}
       {/* <TextField
         id="standard-password-input"
         className={styles.input}
@@ -57,12 +68,15 @@ const Login: FC = () => {
           setPassword(e.target.value);
         }}
       /> */}
-      {/* <div className={styles.buttons}>
+      <div className={styles.buttons}>
         <Button variant="contained" onClick={handleSignIn}>
           Sign In
         </Button>
-      </div> */}
-      <p className={styles.adviceLine}>You can create account for your organization, <br /> or be invited by your manager</p>
+      </div>
+      <p className={styles.adviceLine}>
+        You can create account for your organization, <br /> or be invited by
+        your manager
+      </p>
       <div className={styles.buttons}>
         <LoginWithGoogle />
       </div>

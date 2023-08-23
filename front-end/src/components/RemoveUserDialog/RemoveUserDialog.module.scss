@@ -1,0 +1,26 @@
+.dialog {
+  width: 300px;
+  max-height: 500px;
+  padding: 12px;
+}
+
+h2.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li.item {
+  display: flex;
+  justify-content: space-between;
+
+  &__text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+button.closeButton {
+  padding: 4px;
+}

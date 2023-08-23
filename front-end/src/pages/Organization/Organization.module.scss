@@ -5,13 +5,19 @@
   align-items: center;
 }
 
-.actionsBlock {
+.topActions {
+  margin: 24px 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vacationActions {
   display: flex;
   gap: 12px;
 }
 
 .invitation {
-  margin: 24px 0 32px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -29,13 +35,17 @@
   }
 }
 
+.requestTable {
+  margin-bottom: 30px;
+}
+
 .listTitle {
   text-align: center;
 }
 
 .pageTitle {
   font-size: 18px;
-  color: darkorange;
+  color: $warning;
 }
 
 .link {

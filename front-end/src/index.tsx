@@ -8,6 +8,8 @@ import App from "./App";
 import {store} from "./store/store";
 import reportWebVitals from "./reportWebVitals";
 import "./styles/index.scss";
+import 'react-calendar-timeline/lib/Timeline.css'
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,

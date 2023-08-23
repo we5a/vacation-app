@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Typography } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import TextField from "@mui/material/TextField";
 import moment from "moment";
 
+import { CustomTimeline } from "components";
 import styles from "./Organization.module.scss";
 
 const Organization = () => {
-  const navigate = useNavigate();
   const from = moment("2023-08-25").format("Do MMMM YYYY");
   const to = moment("2023-09-11").format("Do MMMM YYYY");
 
@@ -25,6 +25,7 @@ const Organization = () => {
 
   const handleInvitation = () => {
     console.log("Send invitation");
+    setEmail("");
   };
 
   const requestListColumns: GridColDef[] = [
@@ -74,54 +75,6 @@ const Organization = () => {
     },
   ];
 
-  // Second table logic
-
-  const months: [string, number][] = [
-    ["jan", 31],
-    ["feb", 29],
-    ["mar", 31],
-    ["apr", 30],
-    ["may", 31],
-    ["jun", 30],
-    ["jul", 31],
-    ["aug", 31],
-    ["sep", 30],
-    ["oct", 31],
-    ["nov", 30],
-    ["dec", 31],
-  ];
-
-  const monthsColumns = months.map((m) => {
-    const [abbr, duration] = m;
-    return {
-      field: abbr,
-      headerName: abbr.toUpperCase(),
-      width: duration * 2,
-      sortable: false,
-      cellClassName: styles.cell,
-      renderCell: ({ row }: any) => {
-        console.log("Row", row);
-        return (
-          <div
-            style={{
-              width: duration * 3,
-              border: "1px dotted orange",
-              height: "10px",
-            }}
-          />
-        );
-      },
-    };
-  });
-
-  const calendarScheduleColumns: GridColDef[] = [
-    { field: "id", headerName: "Id", width: 20 },
-    { field: "person", headerName: "Person", width: 100 },
-    ...monthsColumns,
-  ];
-
-  const calendarScheduleRows = [{ id: "1", person: "John Doe", jan: "30" }];
-
   return (
     <div>
       <div className={styles.header}>
@@ -162,20 +115,7 @@ const Organization = () => {
         }}
       />
       <h3 className={styles.listTitle}>Organization overview:</h3>
-
-      <DataGrid
-        rows={calendarScheduleRows}
-        columns={calendarScheduleColumns}
-        disableRowSelectionOnClick
-        disableVirtualization
-        disableColumnMenu
-        hideFooter
-        autoHeight
-        className={styles.requestTable}
-        classes={{
-          cellContent: styles.cellContent,
-        }}
-      />
+      <CustomTimeline />
     </div>
   );
 };

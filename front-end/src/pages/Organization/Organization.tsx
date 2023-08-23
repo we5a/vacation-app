@@ -1,15 +1,19 @@
-import { Typography } from "@mui/material";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import TextField from "@mui/material/TextField";
 import moment from "moment";
 
+import { CustomTimeline } from "components";
 import styles from "./Organization.module.scss";
 
 const Organization = () => {
-  const navigate = useNavigate();
   const from = moment("2023-08-25").format("Do MMMM YYYY");
   const to = moment("2023-09-11").format("Do MMMM YYYY");
+
+  const [email, setEmail] = useState("");
 
   const handleApprove = (id: string) => {
     console.log("Handle approve row with id", id);
@@ -17,6 +21,11 @@ const Organization = () => {
 
   const handleDelete = (id: string) => {
     console.log("Handle delete row with id", id);
+  };
+
+  const handleInvitation = () => {
+    console.log("Send invitation");
+    setEmail("");
   };
 
   const requestListColumns: GridColDef[] = [
@@ -69,11 +78,29 @@ const Organization = () => {
   return (
     <div>
       <div className={styles.header}>
-        <Link to="/dashboard" className={styles.link}>Dashboard</Link>
-        <Typography variant="h6" className={styles.pageTitle}>
+        <Link to="/dashboard" className={styles.link}>
+          Dashboard
+        </Link>
+        <Typography variant="body1" className={styles.pageTitle}>
           Manager's Dashboard
         </Typography>
       </div>
+
+      <div className={styles.invitation}>
+        <Typography component="span" className={styles.invitation__label}>
+          Invite with email:
+        </Typography>
+        <TextField
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={styles.invitation__input}
+        />
+        <Button size="small" variant="contained" onClick={handleInvitation}>
+          Add to the team
+        </Button>
+      </div>
+
       <h3 className={styles.listTitle}>Requested list</h3>
       <DataGrid
         rows={requestDataRows}
@@ -88,6 +115,7 @@ const Organization = () => {
         }}
       />
       <h3 className={styles.listTitle}>Organization overview:</h3>
+      <CustomTimeline />
     </div>
   );
 };

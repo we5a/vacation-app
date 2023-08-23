@@ -3,3 +3,18 @@
   align-items: center;
   column-gap: 6px;
 }
+
+.mobile {
+  display: flex;
+  align-items: center;
+}
+
+.firstRow {
+
+}
+
+.secondRow {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}

@@ -1,0 +1,17 @@
+.calendarHeader {
+}
+
+.dateHeader {
+  background-color: white;
+  span {
+    color: black;
+  }
+}
+
+.calendarLeftPanel {
+  background-color: darkorange;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}

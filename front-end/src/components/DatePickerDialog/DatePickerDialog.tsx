@@ -48,7 +48,7 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
 
   return (
     <Dialog onClose={onClose} open={open} classes={{ paper: styles.dialog }}>
-      <DialogTitle classes={{ root: styles.dialog__title }}>
+      <DialogTitle classes={{ root: styles.title }}>
         {title}
         <IconButton className={styles.dialog__closeButton} onClick={onClose}>
           <CloseIcon />
@@ -60,7 +60,7 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
           disablePast
           value={startDate}
           onChange={(newValue) => setStartDate(newValue)}
-          className={styles.dialog__datePicker}
+          className={styles.datePicker}
         />
 
         <DatePicker
@@ -68,12 +68,12 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
           disablePast
           value={endDate}
           onChange={(newValue) => setEndDate(newValue)}
-          className={styles.dialog__datePicker}
+          className={styles.datePicker}
         />
       </LocalizationProvider>
       <Button
         variant="contained"
-        className={styles.dialog__sendButton}
+        classes={{root: styles.sendButton}}
         onClick={handleSendRequest}
       >
         Send Request

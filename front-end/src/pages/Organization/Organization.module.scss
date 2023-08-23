@@ -10,12 +10,32 @@
   gap: 12px;
 }
 
+.invitation {
+  margin: 24px 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  &__label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &__input {
+    width: 240px;
+    input {
+      padding: 6px;
+    }
+  }
+}
+
 .listTitle {
   text-align: center;
 }
 
 .pageTitle {
   font-size: 18px;
+  color: darkorange;
 }
 
 .link {
@@ -34,4 +54,8 @@
   .cellContent {
     overflow-wrap: normal;
   }
+}
+
+.cell {
+  padding: 0 !important;
 }

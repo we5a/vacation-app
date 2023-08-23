@@ -48,7 +48,7 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
 
   return (
     <Dialog onClose={onClose} open={open} classes={{ paper: styles.dialog }}>
-      <DialogTitle classes={{ root: styles.dialog__title }}>
+      <DialogTitle classes={{ root: styles.title }}>
         {title}
         <IconButton className={styles.dialog__closeButton} onClick={onClose}>
           <CloseIcon />

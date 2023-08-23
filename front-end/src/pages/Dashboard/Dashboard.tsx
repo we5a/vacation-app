@@ -5,7 +5,7 @@ import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
 import { useAppSelector } from "hooks/hooks";
-import { VacationList, VacationCards, DatePickerDialog } from "components";
+import { VacationList, VacationCards, DatePickerDialog, CustomTimeline } from "components";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard: FC = () => {
@@ -57,7 +57,7 @@ const Dashboard: FC = () => {
         disabled: true,
       },
       {
-        type: "Sickness",
+        type: "Sickness:",
         available: 0,
         booked: 0,
         disabled: true,

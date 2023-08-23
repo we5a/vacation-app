@@ -32,7 +32,9 @@ const Login: FC = () => {
   return (
     <div className={styles.login}>
       <img className={styles.logo} src={Logo} alt="logo" />
-      <TextField
+      {/* functionality for POST MVP */}
+      
+      {/* <TextField
         className={styles.input}
         id="standard-email-input"
         label="Email"
@@ -42,8 +44,8 @@ const Login: FC = () => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setEmail(e.target.value);
         }}
-      />
-      <TextField
+      /> */}
+      {/* <TextField
         id="standard-password-input"
         className={styles.input}
         label="Password"
@@ -54,18 +56,19 @@ const Login: FC = () => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setPassword(e.target.value);
         }}
-      />
-      <div className={styles.buttons}>
+      /> */}
+      {/* <div className={styles.buttons}>
         <Button variant="contained" onClick={handleSignIn}>
           Sign In
         </Button>
-      </div>
+      </div> */}
+      <p className={styles.adviceLine}>You can create account for your organization, <br /> or be invited by your manager</p>
       <div className={styles.buttons}>
         <LoginWithGoogle />
       </div>
-      <p className={styles.signUpLine}>
+      {/* <p className={styles.signUpLine}>
         Don't have account yet? <a href="#">Create one</a>
-      </p>
+      </p> */}
     </div>
   );
 };

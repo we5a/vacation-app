@@ -1,3 +1,4 @@
+import type {FC} from "react";
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
@@ -7,30 +8,28 @@ import moment from "moment";
 
 import styles from "./CustomTilemeline.module.scss";
 
-const CustomTimeline = () => {
-  const users = [
-    { id: 1, title: "John Dow" },
-    { id: 2, title: "Kevin Smith" },
-  ];
+type TUser = {
+  id: string,
+  title: string,
+}
 
-  const items = [
-    {
-      id: 1,
-      group: 1,
-      title: "",
-      start_time: moment("2023-06-10", "YYYY-MM-DD"),
-      end_time: moment("2023-06-13", "YYYY-MM-DD"),
-    },
+interface CustomTimelineProps {
+  users: TUser[];
+}
+
+const CustomTimeline: FC<CustomTimelineProps> = ({users}) => {
+  
+  const items = [ // each item is a vacation for the user
     {
       id: 2,
-      group: 2,
+      group: "1", // group means userId
       title: "vacation",
       start_time: moment("2023-08-25", "YYYY-MM-DD"),
-      end_time: moment("2023-09-10", "YYYY-MM-DD"),
+      end_time: moment("2023-09-11", "YYYY-MM-DD"),
     },
     {
       id: 3,
-      group: 1,
+      group: "2",
       title: "vacation",
       start_time: moment("2023-09-05", "YYYY-MM-DD"),
       end_time: moment("2023-09-17", "YYYY-MM-DD"),

@@ -12,6 +12,14 @@ export interface UserInfo {
     vacation: number;
     dayOff: number;
   };
+  _links?: {
+    self: {
+      href: string;
+    };
+    organization: {
+      href: string;
+    };
+  };
 }
 
 export const initialState: UserInfo = {

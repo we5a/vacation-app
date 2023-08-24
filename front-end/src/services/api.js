@@ -32,3 +32,13 @@ export const getVacationRequests = async () => {
   const result = await response.json();
   return result._embedded.vacationRequests;
 };
+
+export const getDataByUrl = async (url) => {
+  if (!url) {
+    return [];
+  }
+  const response = await fetch(url);
+  const result = await response.json();
+  console.info("getDataByUrl result", result, url);
+  return result;
+};

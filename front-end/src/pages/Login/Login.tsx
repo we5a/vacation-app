@@ -23,12 +23,9 @@ const Login: FC = () => {
 
   const handleSignIn = async () => {
     if (!email) {
-      alert("Please enter email");
       return;
     }
-    const users = await getUsers();
-    setUsers(users);
-    const user = users.find((user: UserInfo) => user.email === email);
+    const user = users?.find((user: UserInfo) => user.email === email);
     if (user) {
       dispatch(setUser(user));
       if (user.role === "MANAGER") {
@@ -44,6 +41,18 @@ const Login: FC = () => {
   return (
     <div className={styles.login}>
       <img className={styles.logo} src={Logo} alt="logo" />
+
+      <p className={styles.adviceLine}>
+        Login with Google if you invited by your manager
+      </p>
+
+      <div className={styles.buttons}>
+        <LoginWithGoogle users={users} />
+      </div>
+
+      <p className={styles.adviceLine}>
+        Login with your email if you already in the organization.
+      </p>
 
       <TextField
         className={styles.input}
@@ -72,16 +81,10 @@ const Login: FC = () => {
       /> */}
       <div className={styles.buttons}>
         <Button variant="contained" onClick={handleSignIn}>
-          Sign In
+          Login
         </Button>
       </div>
-      <p className={styles.adviceLine}>
-        You can create account for your organization, <br /> or be invited by
-        your manager
-      </p>
-      <div className={styles.buttons}>
-        <LoginWithGoogle users={users} />
-      </div>
+
       {/* <p className={styles.signUpLine}>
         Don't have account yet? <a href="#">Create one</a>
       </p> */}

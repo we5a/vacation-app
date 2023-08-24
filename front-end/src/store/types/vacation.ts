@@ -7,4 +7,12 @@ export interface Vacation {
   endDate: string;
   status: VacationStatus;
   type: VacationType;
+  _links?: {
+    self: {
+      href: string;
+    };
+    user: {
+      href: string;
+    };
+  };
 }

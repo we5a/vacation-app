@@ -33,10 +33,22 @@ export const getVacationRequests = async () => {
   return result._embedded.vacationRequests;
 };
 
-export const getVacationRequestsById = async (id) => {
+export const getVacationRequestById = async (id) => {
   const response = await fetch(`${BASE_API_URL}/vacationRequests/${id}`);
   const result = await response.json();
   return result._embedded.vacationRequests;
+};
+
+export const updateVacationRequestById = async (id, data) => {
+  const response = await fetch(`${BASE_API_URL}/vacationRequests/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const result = await response.json();
+  return result;
 };
 
 export const createVacationRequest = async (body) => {

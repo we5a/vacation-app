@@ -8,7 +8,12 @@ import moment from "moment";
 
 import { CustomTimeline, RemoveUserDialog } from "components";
 import styles from "./Organization.module.scss";
-import { getVacationRequests } from "services/api";
+import {
+  getDataByUrl,
+  getVacationRequests,
+  updateVacationRequestById,
+} from "services/api";
+import { Vacation, VacationStatus } from "store/types/vacation";
 
 const users = [
   { id: "1", title: "John Dow" },
@@ -16,24 +21,44 @@ const users = [
 ];
 
 const Organization = () => {
-  const [vacationRequests, setVacationRequests] = useState([]);
+  const [vacationRequests, setVacationRequests] = useState<Vacation[]>([]);
+  const [actionsCounter, setActionsCounter] = useState<number>(0);
 
   useEffect(() => {
-    getVacationRequests().then((res) => setVacationRequests(res));
-  }, []);
-
-  const from = moment("2023-08-25").format("Do MMMM YYYY");
-  const to = moment("2023-09-11").format("Do MMMM YYYY");
+    getVacationRequests().then((res) => {
+      setVacationRequests(res);
+    });
+  }, [actionsCounter]);
 
   const [email, setEmail] = useState("");
   const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
 
-  const handleApprove = (id: string) => {
-    console.log("Handle approve row with id", id);
+  const onRequestAction = (vacation: Vacation, newStatus: VacationStatus) => {
+    const { _links, startDate, endDate } = vacation;
+    const vacationId = _links?.self.href.split("/").pop();
+    if (!vacationId) return;
+
+    updateVacationRequestById(vacationId, {
+      status: newStatus,
+      startDate,
+      endDate,
+    })
+      .then((res) => {
+        setActionsCounter(actionsCounter + 1);
+        alert(`Request has been changed to ${newStatus}`);
+        console.log("updateVacationRequestById:", res);
+      })
+      .catch((err) => {
+        console.log("updateVacationRequestById error:", err);
+      });
   };
 
-  const handleDelete = (id: string) => {
-    console.log("Handle delete row with id", id);
+  const handleApprove = (vacation: Vacation) => {
+    onRequestAction(vacation, "APPROVED");
+  };
+
+  const handleDelete = (vacation: Vacation) => {
+    onRequestAction(vacation, "DECLINED");
   };
 
   const handleInvitation = () => {
@@ -57,7 +82,7 @@ const Organization = () => {
     { field: "id", headerName: "№", width: 20, disableColumnMenu: true },
     { field: "lastName", headerName: "Last name", width: 120 },
     { field: "firstName", headerName: "First name", width: 120 },
-    { field: "type", headerName: "Type", width: 80 },
+    { field: "status", headerName: "Status", width: 80 },
     { field: "from", headerName: "From", width: 160 },
     { field: "to", headerName: "To", width: 160 },
     {
@@ -73,7 +98,8 @@ const Organization = () => {
               variant="contained"
               size="small"
               color="success"
-              onClick={() => handleApprove(row.id)}
+              onClick={() => handleApprove(row.request)}
+              disabled={row.status === "APPROVED"}
             >
               approve
             </Button>
@@ -81,7 +107,8 @@ const Organization = () => {
               variant="contained"
               size="small"
               color="error"
-              onClick={() => handleDelete(row.id)}
+              onClick={() => handleDelete(row.request)}
+              disabled={row.status === "DECLINED"}
             >
               reject
             </Button>
@@ -91,26 +118,21 @@ const Organization = () => {
     },
   ];
 
-  const getUserInfo = async (userLink: string) => {
-    const response = await fetch(userLink);
-    const userData = await response.json();
-    console.log(userData);
-    return userData;
-  };
-
-  const requestDataRows = vacationRequests.map(async (request: any, index) => {
-    const userData = await getUserInfo(request._links.user.href);
-
+  const requestDataRows = vacationRequests.map((request: Vacation, index) => {
+    // TODO: Get user data by url and provide it to the list
+    // const userData = await getDataByUrl(request?._links?.user?.href);
     return {
       id: index,
-      key: index,
-      firstName: "John,", // userData.firstName,
-      lastName: "Snow", // userData.lastName,
-      type: "vacation",
+      firstName: "John",
+      lastName: "Dow",
+      status: request.status,
       from: moment(request.startDate).format("Do MMMM YYYY"),
       to: moment(request.endDate).format("Do MMMM YYYY"),
+      request,
     };
   });
+
+  console.log("test123: ", requestDataRows);
 
   return (
     <div>
@@ -149,19 +171,22 @@ const Organization = () => {
       </div>
 
       <h3 className={styles.listTitle}>Requested list:</h3>
-      <DataGrid
-        rows={requestDataRows}
-        columns={requestListColumns}
-        disableRowSelectionOnClick
-        disableVirtualization
-        hideFooter
-        autoHeight
-        className={styles.requestTable}
-        classes={{
-          root: styles.requestTable,
-          cellContent: styles.cellContent,
-        }}
-      />
+
+      {requestDataRows?.length > 0 && (
+        <DataGrid
+          rows={requestDataRows}
+          columns={requestListColumns}
+          disableRowSelectionOnClick
+          disableVirtualization
+          hideFooter
+          autoHeight
+          className={styles.requestTable}
+          classes={{
+            root: styles.requestTable,
+            cellContent: styles.cellContent,
+          }}
+        />
+      )}
       <h3 className={styles.listTitle}>Organization overview:</h3>
       <CustomTimeline users={users} />
 

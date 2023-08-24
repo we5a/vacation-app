@@ -12,8 +12,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch } from "hooks/hooks";
 import { addVacation } from "store/vacationSlice";
 import styles from "./DatePickerDialog.module.scss";
+import { createVacationRequest } from "services/api";
 
-const DatePickerDialog = ({ open, onClose, title }: any) => {
+const DatePickerDialog = ({ open, onClose, title, user }: any) => {
   const DAYS_DELTA = 2;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -27,17 +28,26 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
     return dayjs(moment().add(DAYS_DELTA, "days").format("YYYY-MM-DD"));
   }
 
-  const handleSendRequest = () => {
+  const handleSendRequest = async () => {
     if (startDate && endDate) {
+      const dateRange = {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      };
       dispatch(
         addVacation({
           id,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
           type: "vacation",
-          status: "pending",
+          status: "PENDING",
+          ...dateRange,
         }),
       );
+
+      await createVacationRequest({
+        user: user._links.self.href,
+        status: "PENDING",
+        ...dateRange,
+      });
 
       setStartDate(null);
       setEndDate(null);
@@ -73,7 +83,7 @@ const DatePickerDialog = ({ open, onClose, title }: any) => {
       </LocalizationProvider>
       <Button
         variant="contained"
-        classes={{root: styles.sendButton}}
+        classes={{ root: styles.sendButton }}
         onClick={handleSendRequest}
       >
         Send Request

@@ -17,9 +17,9 @@ interface VacationItemProps {
 }
 
 const statusColorMap = {
-  pending: "warning",
-  approved: "success",
-  declined: "error",
+  PENDING: "warning",
+  APPROVED: "success",
+  DECLINED: "error",
 };
 
 const VacationItem: FC<VacationItemProps> = ({ item, number }) => {

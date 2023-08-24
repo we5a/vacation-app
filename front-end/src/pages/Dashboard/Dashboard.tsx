@@ -1,11 +1,16 @@
-import { type FC, useState, useCallback, useMemo } from "react";
+import { type FC, useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
 import { useAppSelector } from "hooks/hooks";
-import { VacationList, VacationCards, DatePickerDialog, CustomTimeline } from "components";
+import {
+  VacationList,
+  VacationCards,
+  DatePickerDialog,
+  CustomTimeline,
+} from "components";
 import styles from "./Dashboard.module.scss";
 
 const Dashboard: FC = () => {
@@ -100,6 +105,7 @@ const Dashboard: FC = () => {
 
       <DatePickerDialog
         open={isDialogOpen}
+        user={user}
         onClose={handleDialogClose}
         title={"Request new Vacation"}
       />

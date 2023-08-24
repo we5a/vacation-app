@@ -16,14 +16,9 @@ const VacationList: FC<VacationListProps> = ({ items = [] }) => {
           : "Your vacations list is empty"}
       </center>
       <div className={styles.list}>
-
-      {items.map((item, index) => {
-        return (
-          <>
-            <VacationItem item={item} number={index+1} key={item.id} />
-          </>
-        );
-      })}
+        {items.map((item, index) => {
+          return <VacationItem item={item} number={index + 1} key={item.id} />;
+        })}
       </div>
     </div>
   );

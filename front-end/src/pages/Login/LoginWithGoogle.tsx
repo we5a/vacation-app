@@ -32,6 +32,7 @@ const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
             phoneNumber: "911911", // user will provide it later
             role: "WORKER",
             organization: `${BASE_API_URL}/organizations/1`, // "ITstep",
+            _links: data._links,
           };
           // check if user exists in DB
           const userFromDB = users.find(

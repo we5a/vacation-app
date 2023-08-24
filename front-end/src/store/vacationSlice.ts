@@ -17,6 +17,9 @@ export const vacationSlice = createSlice({
   name: "vacations",
   initialState,
   reducers: {
+    initVacations: (state, action: PayloadAction<Vacation[]>) => {
+      state.vacations = action.payload;
+    },
     addVacation: (state, action: PayloadAction<Vacation>) => {
       state.vacations.push(action.payload);
     },
@@ -38,7 +41,11 @@ export const vacationSlice = createSlice({
   },
 });
 
-export const { addVacation, changeVacationStatus, removeVacation } =
-  vacationSlice.actions;
+export const {
+  initVacations,
+  addVacation,
+  changeVacationStatus,
+  removeVacation,
+} = vacationSlice.actions;
 //
 export default vacationSlice.reducer;

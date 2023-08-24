@@ -47,6 +47,14 @@ export const getVacationRequestById = async (id) => {
   return result._embedded.vacationRequests;
 };
 
+export const getVacationRequestByUserId = async (userId) => {
+  const response = await fetch(
+    `${BASE_API_URL}/vacationRequests/search/byUser?id=${userId}`,
+  );
+  const result = await response.json();
+  return result._embedded.vacationRequests;
+};
+
 export const updateVacationRequestById = async (id, data) => {
   const response = await fetch(`${BASE_API_URL}/vacationRequests/${id}`, {
     method: "PUT",

@@ -42,7 +42,6 @@ const DatePickerDialog = ({ open, onClose, title, user }: any) => {
           ...dateRange,
         }),
       );
-
       await createVacationRequest({
         user: user._links.self.href,
         status: "PENDING",

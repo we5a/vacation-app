@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
-import { useAppSelector } from "hooks/hooks";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import {
   VacationList,
   VacationCards,
@@ -12,12 +12,29 @@ import {
   CustomTimeline,
 } from "components";
 import styles from "./Dashboard.module.scss";
+import { getVacationRequestByUserId } from "services/api";
+import { initVacations } from "store/vacationSlice";
+import { Vacation } from "store/types/vacation";
 
 const Dashboard: FC = () => {
   const vacations = useAppSelector((state) => state.vacations.vacations);
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const userId = user?._links?.self.href.split("/").pop();
+    if (!userId) return;
+    getVacationRequestByUserId(userId).then((res) => {
+      const vacations = res.map((item: Vacation) => ({
+        ...item,
+        id: item?._links?.self.href.split("/").pop(),
+        type: "vacation",
+      }));
+      dispatch(initVacations(vacations));
+    });
+  }, [user]);
 
   const marked = useMemo(() => {
     return vacations.map((el) => {

@@ -17,25 +17,24 @@ const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    getUsers().then((data) => setUsers(data));
-  }, []);
-
   const handleSignIn = async () => {
     if (!email) {
       return;
     }
-    const user = users?.find((user: UserInfo) => user.email === email);
-    if (user) {
-      dispatch(setUser(user));
-      if (user.role === "MANAGER") {
-        navigate("/organization");
+    getUsers().then((users) => {
+      const user = users?.find((user: UserInfo) => user.email === email);
+
+      if (user) {
+        dispatch(setUser(user));
+        if (user.role === "MANAGER") {
+          navigate("/organization");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
-        navigate("/dashboard");
+        alert("User not found");
       }
-    } else {
-      alert("User not found");
-    }
+    });
   };
 
   return (

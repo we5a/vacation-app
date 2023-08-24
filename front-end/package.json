@@ -2,7 +2,7 @@
   "name": "vacation-app",
   "version": "0.1.0",
   "homepage": "https://nakan4u.github.io/vacation-app",
-  "proxy": "http://ec2-34-242-160-104.eu-west-1.compute.amazonaws.com/",
+  "proxy": "http://ec2-34-242-160-104.eu-west-1.compute.amazonaws.com",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -46,7 +46,8 @@
     "test": "craco test",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "proxy": "lcp --proxyUrl http://ec2-34-242-160-104.eu-west-1.compute.amazonaws.com"
   },
   "eslintConfig": {
     "extends": [
@@ -70,6 +71,7 @@
     "@craco/craco": "^7.1.0",
     "eslint-config-prettier": "^9.0.0",
     "gh-pages": "^6.0.0",
+    "local-cors-proxy": "^1.1.0",
     "prettier": "3.0.1",
     "sass": "^1.65.1",
     "sass-resources-loader": "^2.2.5"

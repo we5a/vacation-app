@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { googleLogout } from "@react-oauth/google";
 import { deleteUser } from "store/userSlice";
 import { getDataByUrl } from "services/api";
+import { clearVacations } from "store/vacationSlice";
 
 const Header: FC = () => {
   const [organization, setOrganization] = useState<{
@@ -45,6 +46,7 @@ const Header: FC = () => {
 
   const handleLogout = () => {
     dispatch(deleteUser());
+    dispatch(clearVacations());
     googleLogout();
     navigate("/login");
   };

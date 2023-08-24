@@ -2,8 +2,9 @@ import { type FC } from "react";
 import Button from "@mui/material/Button";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "store/userSlice";
+import { UserInfo, setUser } from "store/userSlice";
 import { useAppDispatch } from "hooks/hooks";
+import { BASE_API_URL, createUser } from "services/api";
 
 const LoginWithGoogle: FC = () => {
   const navigate = useNavigate();
@@ -23,7 +24,19 @@ const LoginWithGoogle: FC = () => {
       )
         .then((res: any) => res.json())
         .then((data) => {
-          console.info(data);
+          const userData: UserInfo = {
+            firstName: data.given_name,
+            lastName: data.family_name,
+            email: data.email,
+            birthDate: "1991-08-24", // user will provide it later
+            phoneNumber: "911911", // user will provide it later
+            role: "WORKER",
+            organization: `${BASE_API_URL}/organizations/1`, // "ITstep",
+          };
+          createUser(userData);
+          return userData;
+        })
+        .then((data: UserInfo) => {
           dispatch(setUser(data));
           navigate("/dashboard");
         })

@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 export interface UserInfo {
-  id: string;
-  name: string,
-  given_name: string;
-  family_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  role?: string;
+  birthDate: string;
+  phoneNumber: string;
+  role: string;
+  organization: string;
   availabilityOfTimeOff?: {
     vacation: number;
     dayOff: number;
@@ -14,12 +15,13 @@ export interface UserInfo {
 }
 
 export const initialState: UserInfo = {
-  id: "",
-  name: "",
-  given_name: "",
-  family_name: "",
+  firstName: "",
+  lastName: "",
   email: "",
+  birthDate: "",
+  phoneNumber: "",
   role: "worker",
+  organization: "",
   availabilityOfTimeOff: {
     vacation: 25,
     dayOff: 15,

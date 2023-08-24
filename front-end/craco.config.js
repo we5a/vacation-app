@@ -6,6 +6,7 @@ module.exports = {
                 @import "src/styles/_variables.scss";
                 @import "src/styles/_calendar.scss";
                 @import "src/styles/_palette.scss";
+                @import "src/styles/_rct-calendar.scss";
                 `,
       },
     },

@@ -1,7 +1,5 @@
 export const BASE_API_URL =
   "http://ec2-34-242-160-104.eu-west-1.compute.amazonaws.com/vacationManagement";
-// for local needs
-export const BASE_API_URL2 = "http://localhost:8010/proxy/vacationManagement";
 
 export const getUsers = async () => {
   const response = await fetch(`${BASE_API_URL}/users`);

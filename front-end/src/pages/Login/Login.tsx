@@ -13,11 +13,12 @@ import { getUsers } from "services/api";
 const Login: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [users, setUsers] = useState<UserInfo[]>([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    getUsers().then((res) => console.log(res));
+    getUsers().then((data) => setUsers(data));
   }, []);
 
   const handleSignIn = async () => {
@@ -26,6 +27,7 @@ const Login: FC = () => {
       return;
     }
     const users = await getUsers();
+    setUsers(users);
     const user = users.find((user: UserInfo) => user.email === email);
     if (user) {
       dispatch(setUser(user));
@@ -78,7 +80,7 @@ const Login: FC = () => {
         your manager
       </p>
       <div className={styles.buttons}>
-        <LoginWithGoogle />
+        <LoginWithGoogle users={users} />
       </div>
       {/* <p className={styles.signUpLine}>
         Don't have account yet? <a href="#">Create one</a>

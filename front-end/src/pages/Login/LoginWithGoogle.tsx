@@ -6,7 +6,7 @@ import { UserInfo, setUser } from "store/userSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { BASE_API_URL, createUser } from "services/api";
 
-const LoginWithGoogle: FC = () => {
+const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -33,8 +33,16 @@ const LoginWithGoogle: FC = () => {
             role: "WORKER",
             organization: `${BASE_API_URL}/organizations/1`, // "ITstep",
           };
-          createUser(userData);
-          return userData;
+          // check if user exists in DB
+          const userFromDB = users.find(
+            (user: UserInfo) => user.email === data.email,
+          );
+          if (userFromDB) {
+            return userFromDB;
+          } else {
+            createUser(userData);
+            return userData;
+          }
         })
         .then((data: UserInfo) => {
           dispatch(setUser(data));

@@ -9,6 +9,8 @@ import moment from "moment";
 import { CustomTimeline, RemoveUserDialog } from "components";
 import styles from "./Organization.module.scss";
 import {
+  BASE_API_URL,
+  createUser,
   deleteUserById,
   getDataByUrl,
   getUsers,
@@ -74,8 +76,23 @@ const Organization = () => {
   };
 
   const handleInvitation = () => {
-    console.log("Send invitation");
-    setEmail("");
+    if (!email?.length) return;
+    const userData: UserInfo = {
+      firstName: "new-user",
+      lastName: `${users.length}`,
+      email,
+      birthDate: "1991-08-24", // user will provide it later
+      phoneNumber: "_", // user will provide it later
+      role: "WORKER",
+      organization: `${BASE_API_URL}/organizations/1`, // "ITstep",
+    };
+    createUser(userData)
+      .then(() => {
+        alert("New user has been created!");
+        setEmail("");
+        return getUsers();
+      })
+      .then((data) => setUsers(data));
   };
 
   const openRemoveDialog = () => {
@@ -100,7 +117,7 @@ const Organization = () => {
     { field: "id", headerName: "№", width: 20, disableColumnMenu: true },
     { field: "lastName", headerName: "Last name", width: 120 },
     { field: "firstName", headerName: "First name", width: 120 },
-    { field: "status", headerName: "Status", width: 80 },
+    { field: "status", headerName: "Status", width: 120 },
     { field: "from", headerName: "From", width: 160 },
     { field: "to", headerName: "To", width: 160 },
     {
@@ -119,7 +136,7 @@ const Organization = () => {
               onClick={() => handleApprove(row.request)}
               disabled={row.status === "APPROVED"}
             >
-              approve
+              Approve
             </Button>
             <Button
               variant="contained"
@@ -128,7 +145,7 @@ const Organization = () => {
               onClick={() => handleDelete(row.request)}
               disabled={row.status === "DECLINED"}
             >
-              reject
+              Decline
             </Button>
           </div>
         );
@@ -140,7 +157,7 @@ const Organization = () => {
     // TODO: Get user data by url and provide it to the list
     // const userData = await getDataByUrl(request?._links?.user?.href);
     return {
-      id: index,
+      id: index + 1,
       firstName: "John",
       lastName: "Dow",
       status: request.status,
@@ -164,7 +181,7 @@ const Organization = () => {
       <div className={styles.topActions}>
         <div className={styles.invitation}>
           <Typography component="span" className={styles.invitation__label}>
-            Invite with email:
+            User e-mail:
           </Typography>
           <TextField
             placeholder="email"
@@ -173,7 +190,7 @@ const Organization = () => {
             className={styles.invitation__input}
           />
           <Button size="small" variant="contained" onClick={handleInvitation}>
-            Add to the team
+            Add user
           </Button>
         </div>
         <Button
@@ -182,7 +199,7 @@ const Organization = () => {
           size="small"
           onClick={openRemoveDialog}
         >
-          Remove User
+          Manage User
         </Button>
       </div>
 
@@ -209,7 +226,7 @@ const Organization = () => {
       <RemoveUserDialog
         open={isRemoveDialogOpen}
         onClose={closeRemoveDialog}
-        users={users}
+        users={users.filter((user) => user.role === "WORKER")}
         handleUserDelete={handleUserDelete}
       />
     </div>

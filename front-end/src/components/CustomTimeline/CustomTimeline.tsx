@@ -1,4 +1,4 @@
-import type {FC} from "react";
+import type { FC } from "react";
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
@@ -9,17 +9,17 @@ import moment from "moment";
 import styles from "./CustomTilemeline.module.scss";
 
 type TUser = {
-  id: string,
-  title: string,
-}
+  id: string;
+  title: string;
+};
 
 interface CustomTimelineProps {
   users: TUser[];
 }
 
-const CustomTimeline: FC<CustomTimelineProps> = ({users}) => {
-  
-  const items = [ // each item is a vacation for the user
+const CustomTimeline: FC<CustomTimelineProps> = ({ users }) => {
+  const items = [
+    // each item is a vacation for the user
     {
       id: 2,
       group: "1", // group means userId

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
@@ -9,20 +9,32 @@ import moment from "moment";
 import { CustomTimeline, RemoveUserDialog } from "components";
 import styles from "./Organization.module.scss";
 import {
+  deleteUserById,
   getDataByUrl,
+  getUsers,
   getVacationRequests,
   updateVacationRequestById,
 } from "services/api";
 import { Vacation, VacationStatus } from "store/types/vacation";
-
-const users = [
-  { id: "1", title: "John Dow" },
-  { id: "2", title: "Kevin Smith" },
-];
+import { UserInfo } from "store/userSlice";
 
 const Organization = () => {
+  const [users, setUsers] = useState<UserInfo[]>([]);
   const [vacationRequests, setVacationRequests] = useState<Vacation[]>([]);
   const [actionsCounter, setActionsCounter] = useState<number>(0);
+
+  useEffect(() => {
+    getUsers().then((data) => setUsers(data));
+  }, []);
+
+  const userGroups = useMemo(
+    () =>
+      users.map((user) => ({
+        id: user.email,
+        title: user.firstName + " " + user.lastName,
+      })),
+    [users],
+  );
 
   useEffect(() => {
     getVacationRequests().then((res) => {
@@ -74,8 +86,14 @@ const Organization = () => {
     setIsRemoveDialogOpen(false);
   };
 
-  const handleUserDelete = (id: string) => {
-    console.log("Delete user with id:", id);
+  const handleUserDelete = async (user: UserInfo) => {
+    const userId = user._links?.self.href.split("/").pop();
+    deleteUserById(userId)
+      .then(() => getUsers())
+      .then((data) => setUsers(data))
+      .catch((err) => {
+        console.log("deleteUserById error:", err);
+      });
   };
 
   const requestListColumns: GridColDef[] = [
@@ -132,8 +150,6 @@ const Organization = () => {
     };
   });
 
-  console.log("test123: ", requestDataRows);
-
   return (
     <div>
       <div className={styles.header}>
@@ -188,7 +204,7 @@ const Organization = () => {
         />
       )}
       <h3 className={styles.listTitle}>Organization overview:</h3>
-      <CustomTimeline users={users} />
+      {userGroups?.length > 0 && <CustomTimeline users={userGroups} />}
 
       <RemoveUserDialog
         open={isRemoveDialogOpen}

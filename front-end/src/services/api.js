@@ -27,6 +27,14 @@ export const getUserById = async (userId) => {
   return result;
 };
 
+export const deleteUserById = async (userId) => {
+  const response = await fetch(`${BASE_API_URL}/users/${userId}`, {
+    method: "DELETE",
+  });
+  const result = await response.json();
+  return result;
+};
+
 export const getVacationRequests = async () => {
   const response = await fetch(`${BASE_API_URL}/vacationRequests`);
   const result = await response.json();

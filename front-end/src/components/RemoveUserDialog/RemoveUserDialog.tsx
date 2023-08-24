@@ -11,12 +11,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
 import styles from "./RemoveUserDialog.module.scss";
+import { UserInfo } from "store/userSlice";
 
 interface RemoveUserDialogProps {
   open: boolean;
   onClose: () => void;
-  users: any[];
-  handleUserDelete: (id: string) => void;
+  users: UserInfo[];
+  handleUserDelete: (user: UserInfo) => void;
 }
 
 const RemoveUserDialog: FC<RemoveUserDialogProps> = ({
@@ -34,17 +35,14 @@ const RemoveUserDialog: FC<RemoveUserDialogProps> = ({
         </IconButton>
       </DialogTitle>
       <List>
-        {users.map((user: any, index: number) => {
+        {users.map((user: UserInfo, index: number) => {
           return (
             <ListItem className={styles.item}>
               <div className={styles.item__text}>
                 <Typography component={"span"}>{index + 1}. &nbsp;</Typography>
-                <Typography component={"span"}>{user.title}</Typography>
+                <Typography component={"span"}>{user.email}</Typography>
               </div>
-              <IconButton
-                size="small"
-                onClick={() => handleUserDelete(user.id)}
-              >
+              <IconButton size="small" onClick={() => handleUserDelete(user)}>
                 <DeleteIcon color="error" />
               </IconButton>
             </ListItem>

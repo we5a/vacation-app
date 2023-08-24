@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import moment from "moment";
 
 import { CustomTimeline, RemoveUserDialog } from "components";
 import styles from "./Organization.module.scss";
+import { getVacationRequests } from "services/api";
 
 const users = [
   { id: "1", title: "John Dow" },
@@ -15,6 +16,12 @@ const users = [
 ];
 
 const Organization = () => {
+  const [vacationRequests, setVacationRequests] = useState([]);
+
+  useEffect(() => {
+    getVacationRequests().then((res) => setVacationRequests(res));
+  }, []);
+
   const from = moment("2023-08-25").format("Do MMMM YYYY");
   const to = moment("2023-09-11").format("Do MMMM YYYY");
 
@@ -84,16 +91,26 @@ const Organization = () => {
     },
   ];
 
-  const requestDataRows = [
-    {
-      id: "1",
-      lastName: "Doe",
-      firstName: "John",
+  const getUserInfo = async (userLink: string) => {
+    const response = await fetch(userLink);
+    const userData = await response.json();
+    console.log(userData);
+    return userData;
+  };
+
+  const requestDataRows = vacationRequests.map(async (request: any, index) => {
+    const userData = await getUserInfo(request._links.user.href);
+
+    return {
+      id: index,
+      key: index,
+      firstName: "John,", // userData.firstName,
+      lastName: "Snow", // userData.lastName,
       type: "vacation",
-      from,
-      to,
-    },
-  ];
+      from: moment(request.startDate).format("Do MMMM YYYY"),
+      to: moment(request.endDate).format("Do MMMM YYYY"),
+    };
+  });
 
   return (
     <div>

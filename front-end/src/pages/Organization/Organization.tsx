@@ -17,12 +17,12 @@ import {
   getVacationRequests,
   updateVacationRequestById,
 } from "services/api";
-import { Vacation, VacationStatus } from "store/types/vacation";
+import type { Vacation, VacationStatus } from "store/types/vacation"; // modify types
 import { UserInfo } from "store/userSlice";
 
 const Organization = () => {
   const [users, setUsers] = useState<UserInfo[]>([]);
-  const [vacationRequests, setVacationRequests] = useState<Vacation[]>([]);
+  const [vacations, setVacations] = useState<any>([]);
   const [actionsCounter, setActionsCounter] = useState<number>(0);
 
   useEffect(() => {
@@ -39,8 +39,30 @@ const Organization = () => {
   );
 
   useEffect(() => {
-    getVacationRequests().then((res) => {
-      setVacationRequests(res);
+    getVacationRequests().then((rawVacations: Vacation[]) => {
+      Promise.all(
+        rawVacations.map(async (vacation: any, index: number) => {
+          const link = vacation._links.user.href;
+          const { status, startDate, endDate } = vacation;
+          const user = await getDataByUrl(link);
+          if (user) {
+            const { firstName, lastName } = user;
+
+            return {
+              id: index + 1,
+              firstName,
+              lastName,
+              status,
+              from: moment(startDate).format("Do MMMM YYYY"),
+              to: moment(endDate).format("Do MMMM YYYY"),
+              request: vacation,
+            };
+          }
+          return 5;
+        }),
+      ).then((combinedVacations) => {
+        setVacations(combinedVacations);
+      });
     });
   }, [actionsCounter]);
 
@@ -117,7 +139,7 @@ const Organization = () => {
     { field: "id", headerName: "№", width: 20, disableColumnMenu: true },
     { field: "lastName", headerName: "Last name", width: 120 },
     { field: "firstName", headerName: "First name", width: 120 },
-    { field: "status", headerName: "Status", width: 120 },
+    { field: "status", headerName: "Status", minWidth: 50 },
     { field: "from", headerName: "From", width: 160 },
     { field: "to", headerName: "To", width: 160 },
     {
@@ -125,7 +147,8 @@ const Organization = () => {
       headerName: "Action",
       disableColumnMenu: true,
       disableReorder: true,
-      width: 180,
+      hideSortIcons: true,
+      minWidth: 190,
       renderCell: ({ row }) => {
         return (
           <div className={styles.vacationActions}>
@@ -152,20 +175,6 @@ const Organization = () => {
       },
     },
   ];
-
-  const requestDataRows = vacationRequests.map((request: Vacation, index) => {
-    // TODO: Get user data by url and provide it to the list
-    // const userData = await getDataByUrl(request?._links?.user?.href);
-    return {
-      id: index + 1,
-      firstName: "John",
-      lastName: "Dow",
-      status: request.status,
-      from: moment(request.startDate).format("Do MMMM YYYY"),
-      to: moment(request.endDate).format("Do MMMM YYYY"),
-      request,
-    };
-  });
 
   return (
     <div>
@@ -205,9 +214,9 @@ const Organization = () => {
 
       <h3 className={styles.listTitle}>Requested list:</h3>
 
-      {requestDataRows?.length > 0 && (
+      {vacations?.length > 0 && (
         <DataGrid
-          rows={requestDataRows}
+          rows={vacations}
           columns={requestListColumns}
           disableRowSelectionOnClick
           disableVirtualization

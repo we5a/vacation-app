@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/vacation-app/static/css/main.bc374961.css",
-    "main.js": "/vacation-app/static/js/main.ec8d5977.js",
+    "main.css": "/vacation-app/static/css/main.f5498c46.css",
+    "main.js": "/vacation-app/static/js/main.5436b370.js",
     "static/js/988.95e9a954.chunk.js": "/vacation-app/static/js/988.95e9a954.chunk.js",
     "static/media/vaca-logo.png": "/vacation-app/static/media/vaca-logo.ad206eec943811140786.png",
     "index.html": "/vacation-app/index.html",
-    "main.bc374961.css.map": "/vacation-app/static/css/main.bc374961.css.map",
-    "main.ec8d5977.js.map": "/vacation-app/static/js/main.ec8d5977.js.map",
+    "main.f5498c46.css.map": "/vacation-app/static/css/main.f5498c46.css.map",
+    "main.5436b370.js.map": "/vacation-app/static/js/main.5436b370.js.map",
     "988.95e9a954.chunk.js.map": "/vacation-app/static/js/988.95e9a954.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.bc374961.css",
-    "static/js/main.ec8d5977.js"
+    "static/css/main.f5498c46.css",
+    "static/js/main.5436b370.js"
   ]
 }

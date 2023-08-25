@@ -20,4 +20,9 @@
     margin: 24px auto;
     align-self: center;
   }
+
+  .errorMessage {
+    font-size: 12px;
+    color: $red500;
+  }
 }

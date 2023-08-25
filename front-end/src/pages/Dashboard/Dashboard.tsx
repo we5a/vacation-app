@@ -51,10 +51,11 @@ const Dashboard: FC = () => {
       availabilityOfTimeOff: { vacation, dayOff } = { vacation: 0, dayOff: 0 },
     } = user;
 
+    console.log("Vac", vacations);
     const bookedDurations = vacations.reduce(
       (acc, el) => {
         const { type, endDate, startDate } = el;
-        const durationInDays = moment(endDate).diff(moment(startDate), "days");
+        const durationInDays = moment(endDate).diff(moment(startDate), "days") + 1;
         acc[type] = acc[type] + durationInDays;
         return acc;
       },
@@ -99,6 +100,8 @@ const Dashboard: FC = () => {
     setIsCalendarOpen((prev: boolean) => !prev);
   };
 
+  console.log("TT", timesOffData);
+
   return (
     <div className={styles.dashboard}>
       <VacationCards
@@ -125,6 +128,7 @@ const Dashboard: FC = () => {
         user={user}
         onClose={handleDialogClose}
         title={"Request new Vacation"}
+        available = {timesOffData.map(v=>v.available)}
       />
     </div>
   );

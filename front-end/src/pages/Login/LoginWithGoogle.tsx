@@ -40,22 +40,24 @@ const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
           const userFromDB = users.find(
             (user: UserInfo) => user.email === data.email,
           );
-          console.log("UDB", userFromDB);
           if (userFromDB) {
-            console.log("UU", userFromDB);
             return userFromDB;
           } else {
-            createUser(userData);
+            createUser(userData).then(data => {
+              console.log("Data after creating", data);
+            });
+
             // then user should be created, then get links
             return userData;
           }
         })
         .then((data: UserInfo) => {
-          dispatch(setUser(data));
-          
-          // save permanently
           saveUserPermanently(data);
-          navigate("/dashboard");
+          dispatch(setUser(data));
+
+          const startPage =
+            data.role === "MANAGER" ? "/organization" : "/dashboard";
+          navigate(startPage);
         })
         .catch((err: any) => console.log(err));
     }

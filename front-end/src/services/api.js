@@ -77,6 +77,17 @@ export const createVacationRequest = async (body) => {
   return result;
 };
 
+export const deleteVacationById = async (id) => {
+  const response = await fetch(`${BASE_API_URL}/vacationRequests/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
 export const getDataByUrl = async (url) => {
   if (!url) {
     return [];

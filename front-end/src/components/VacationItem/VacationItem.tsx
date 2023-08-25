@@ -1,15 +1,17 @@
 import { type FC } from "react";
 import moment from "moment";
 import { Chip } from "@mui/material";
+import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { removeVacation } from "store/vacationSlice";
+import { Box } from "@mui/system";
+import CardContent from "@mui/material/CardContent";
+
 import { useAppDispatch } from "hooks/hooks";
 import type { Vacation } from "store/types/vacation";
+import { removeVacation } from "store/vacationSlice";
+import { deleteVacationById } from "services/api";
 import styles from "./VacationItem.module.scss";
-import { Box } from "@mui/system";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 
 interface VacationItemProps {
   item: Vacation;
@@ -31,7 +33,13 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
   };
 
   const onDelete = () => {
-    dispatch(removeVacation(id));
+    deleteVacationById(id)
+      .then((data) => {
+        dispatch(removeVacation(id));
+      })
+      .catch((e) => {
+        console.log("Error", e);
+      });
   };
 
   const deleteButton = (

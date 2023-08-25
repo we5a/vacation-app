@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { UserInfo, setUser } from "store/userSlice";
 import { useAppDispatch } from "hooks/hooks";
 import { BASE_API_URL, createUser } from "services/api";
+import { saveUserPermanently } from "services/utils";
 
 const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
   const navigate = useNavigate();
@@ -51,6 +52,9 @@ const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
         })
         .then((data: UserInfo) => {
           dispatch(setUser(data));
+          
+          // save permanently
+          saveUserPermanently(data);
           navigate("/dashboard");
         })
         .catch((err: any) => console.log(err));

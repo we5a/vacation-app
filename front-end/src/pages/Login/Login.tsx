@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
-import Logo from "assets/images/vacation.png";
+import VacaLogo from "assets/images/vaca-logo.png";
 import styles from "./Login.module.scss";
 import LoginWithGoogle from "./LoginWithGoogle";
 import { useAppDispatch } from "hooks/hooks";
@@ -46,7 +46,8 @@ const Login: FC = () => {
 
   return (
     <div className={styles.login}>
-      <img className={styles.logo} src={Logo} alt="logo" />
+      <img className={styles.logo} src={VacaLogo} alt="logo" />
+
 
       <p className={styles.adviceLine}>
         Login with Google if you invited by your manager

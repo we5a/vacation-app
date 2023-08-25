@@ -28,12 +28,17 @@ const DatePickerDialog = ({ open, onClose, title, user }: any) => {
     return dayjs(moment().add(DAYS_DELTA, "days").format("YYYY-MM-DD"));
   }
 
+  const dropTimeZoneInDate = (date: Dayjs) => {
+    return moment(date.toISOString()).format("YYYY-MM-DD");
+  };
+
   const handleSendRequest = async () => {
     if (startDate && endDate) {
       const dateRange = {
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: dropTimeZoneInDate(startDate),
+        endDate: dropTimeZoneInDate(endDate),
       };
+
       dispatch(
         addVacation({
           id,

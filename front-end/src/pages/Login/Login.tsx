@@ -17,6 +17,13 @@ const Login: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    getUsers().then((users) => {
+      console.log("Users", users);
+      setUsers(users);
+    });
+  }, []);
+
   const handleSignIn = async () => {
     if (!email) {
       return;

@@ -24,6 +24,7 @@ const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
       )
         .then((res: any) => res.json())
         .then((data) => {
+          console.log("Data", data);
           const userData: UserInfo = {
             firstName: data.given_name,
             lastName: data.family_name,
@@ -32,16 +33,19 @@ const LoginWithGoogle: FC<{ users: UserInfo[] }> = ({ users }) => {
             phoneNumber: "911911", // user will provide it later
             role: "WORKER",
             organization: `${BASE_API_URL}/organizations/1`, // "ITstep",
-            _links: data._links,
+            _links: data._links, // not returns for the first time
           };
           // check if user exists in DB
           const userFromDB = users.find(
             (user: UserInfo) => user.email === data.email,
           );
+          console.log("UDB", userFromDB);
           if (userFromDB) {
+            console.log("UU", userFromDB);
             return userFromDB;
           } else {
             createUser(userData);
+            // then user should be created, then get links
             return userData;
           }
         })

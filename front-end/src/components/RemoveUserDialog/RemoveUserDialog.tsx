@@ -37,7 +37,7 @@ const RemoveUserDialog: FC<RemoveUserDialogProps> = ({
       <List>
         {users.map((user: UserInfo, index: number) => {
           return (
-            <ListItem className={styles.item}>
+            <ListItem className={styles.item} key={user.email}>
               <div className={styles.item__text}>
                 <Typography component={"span"}>{index + 1}. &nbsp;</Typography>
                 <Typography component={"span"}>{user.email}</Typography>

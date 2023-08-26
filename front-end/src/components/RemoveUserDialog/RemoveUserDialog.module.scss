@@ -1,5 +1,5 @@
 .dialog {
-  width: 300px;
+  width: 400px;
   max-height: 500px;
   padding: 12px;
 }
@@ -14,10 +14,8 @@ li.item {
   display: flex;
   justify-content: space-between;
 
-  &__text {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  & > div {
+    @include text-ellipsis;
   }
 }
 

@@ -12,6 +12,7 @@ import {
   BASE_API_URL,
   createUser,
   deleteUserById,
+  deleteVacationById,
   getDataByUrl,
   getUsers,
   getVacationRequests,
@@ -29,27 +30,55 @@ const Organization = () => {
     getUsers().then((data) => setUsers(data));
   }, []);
 
-  const userGroups = useMemo(
-    () =>
-      users.map((user) => ({
-        id: user.email,
-        title: user.firstName + " " + user.lastName,
-      })),
-    [users],
-  );
+  const userGroups = useMemo(() => {
+    return users.map((user) => {
+      const { firstName, lastName, _links } = user;
+      const userId = _links?.self?.href.split("/").slice(-1)[0];
+
+      return {
+        id: Number.parseInt(userId!) || 0,
+        title: firstName + " " + lastName,
+        stackItems: true,
+      };
+    });
+  }, [users]);
 
   useEffect(() => {
+    getVacations();
+  }, [actionsCounter]);
+
+  const [email, setEmail] = useState("");
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+
+  const getVacations = function () {
     getVacationRequests().then((rawVacations: Vacation[]) => {
       Promise.all(
         rawVacations.map(async (vacation: any, index: number) => {
           const link = vacation._links.user.href;
-          const { status, startDate, endDate } = vacation;
+          const {
+            status,
+            startDate,
+            endDate,
+            _links: {
+              self: { href: vacLink },
+            },
+          } = vacation;
+          const vacationId = vacLink.split("/").slice(-1)[0];
           const user = await getDataByUrl(link);
           if (user) {
-            const { firstName, lastName } = user;
+            const {
+              firstName,
+              lastName,
+              _links: {
+                self: { href: selfLink },
+              },
+            } = user;
+            const userId = selfLink.split("/").slice(-1)[0];
 
             return {
               id: index + 1,
+              userId,
+              vacationId,
               firstName,
               lastName,
               status,
@@ -58,16 +87,58 @@ const Organization = () => {
               request: vacation,
             };
           }
-          return 5;
+          return null;
         }),
       ).then((combinedVacations) => {
         setVacations(combinedVacations);
       });
     });
-  }, [actionsCounter]);
+  };
 
-  const [email, setEmail] = useState("");
-  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+  //
+  // const items = [
+  //   // each item is a vacation for the user
+  //   {
+  //     id: 2,
+  //     group: "1", // group means userId
+  //     title: "vacation",
+  //     start_time: moment("2023-08-25", "YYYY-MM-DD"),
+  //     end_time: moment("2023-09-11", "YYYY-MM-DD"),
+  //   },
+  //   {
+  //     id: 3,
+  //     group: "2",
+  //     title: "vacation",
+  //     start_time: moment("2023-09-05", "YYYY-MM-DD"),
+  //     end_time: moment("2023-09-17", "YYYY-MM-DD"),
+  //   },
+  // ];
+
+  const items = useMemo(() => {
+    return vacations.map((vacation: any) => {
+      console.log("VAca", vacation);
+      const {
+        vacationId,
+        userId,
+        request: { startDate, endDate, status },
+      } = vacation;
+      return {
+        id: Number.parseInt(vacationId),
+        group: Number.parseInt(userId),
+        start_time: moment(startDate, "YYYY-MM-DD"),
+        end_time:
+          endDate === startDate
+            ? moment(endDate, "YYYY-MM-DD").add(24, "hours")
+            : moment(endDate, "YYYY-MM-DD"),
+        title: "vacation",
+        itemProps: {
+          className: styles[`${status}`],
+        },
+      };
+    });
+  }, [vacations, users]);
+
+  console.log("Prepared vacations", items);
 
   const onRequestAction = (vacation: Vacation, newStatus: VacationStatus) => {
     const { _links, startDate, endDate } = vacation;
@@ -127,12 +198,24 @@ const Organization = () => {
 
   const handleUserDelete = async (user: UserInfo) => {
     const userId = user._links?.self.href.split("/").pop();
-    deleteUserById(userId)
-      .then(() => getUsers())
-      .then((data) => setUsers(data))
-      .catch((err) => {
-        console.log("deleteUserById error:", err);
-      });
+
+    const userVacations = vacations.filter((v: any) => v.userId === userId);
+
+    Promise.all(
+      userVacations.map(async (v: any) => {
+        return deleteVacationById(v.vacationId);
+      }),
+    ).then((res) => {
+      deleteUserById(userId)
+        .then(() => getUsers())
+        .then((data) => setUsers(data))
+        .then(() => {
+          return getVacations();
+        })
+        .catch((err) => {
+          console.log("deleteUserById error:", err);
+        });
+    });
   };
 
   const requestListColumns: GridColDef[] = [
@@ -212,25 +295,26 @@ const Organization = () => {
         </Button>
       </div>
 
-      <h3 className={styles.listTitle}>Requested list:</h3>
-
       {vacations?.length > 0 && (
-        <DataGrid
-          rows={vacations}
-          columns={requestListColumns}
-          disableRowSelectionOnClick
-          disableVirtualization
-          hideFooter
-          autoHeight
-          className={styles.requestTable}
-          classes={{
-            root: styles.requestTable,
-            cellContent: styles.cellContent,
-          }}
-        />
+        <>
+          <h3 className={styles.listTitle}>Requested list:</h3>
+          <DataGrid
+            rows={vacations}
+            columns={requestListColumns}
+            disableRowSelectionOnClick
+            disableVirtualization
+            hideFooter
+            autoHeight
+            className={styles.requestTable}
+            classes={{
+              root: styles.requestTable,
+              cellContent: styles.cellContent,
+            }}
+          />
+        </>
       )}
       <h3 className={styles.listTitle}>Organization overview:</h3>
-      {userGroups?.length > 0 && <CustomTimeline users={userGroups} />}
+      <CustomTimeline users={userGroups} items={items} />
 
       <RemoveUserDialog
         open={isRemoveDialogOpen}

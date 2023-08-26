@@ -1,0 +1,6 @@
+1)+ after google login create user if it not exist;
+2)+ get user Role
+  if it Worker redirect to dashboard
+  if it Manager redirect to organithation page
+3) Worker should be able create requests;
+4) Manager should be able to approve requests;

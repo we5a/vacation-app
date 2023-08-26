@@ -36,7 +36,7 @@ const VacationCards: FC<VacationCardsProps> = ({
       {timesOffData.map((item) => {
         const isDisabled = item.disabled || false;
         return (
-          <Grid item xs={7} md={4} lg={3}>
+          <Grid item xs={7} md={4} lg={3} key={item.type}>
             <Card
               sx={{ minWidth: 220 }}
               key={item.type}

@@ -1,26 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
-
-interface UserState {
-  id: string;
-  name: string,
-  given_name: string;
-  family_name: string;
+export interface UserInfo {
+  firstName: string;
+  lastName: string;
   email: string;
-  role?: string;
+  birthDate: string;
+  phoneNumber: string;
+  role: string;
+  organization: string;
   availabilityOfTimeOff?: {
     vacation: number;
     dayOff: number;
   };
+  _links?: {
+    self: {
+      href: string;
+    };
+    organization: {
+      href: string;
+    };
+  };
 }
 
-export const initialState: UserState | null = {
-  id: "vbn",
-  name: "",
-  given_name: "",
-  family_name: "",
-  email: "user@mail.com",
+export const initialState: UserInfo = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  birthDate: "",
+  phoneNumber: "",
   role: "worker",
+  organization: "",
   availabilityOfTimeOff: {
     vacation: 25,
     dayOff: 15,
@@ -31,11 +40,11 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
-      return {...state, ...action.payload};
+    setUser: (state, action: PayloadAction<UserInfo>) => {
+      return { ...state, ...action.payload };
     },
-    deleteUser: (state) => {
-      (state as unknown as null) = null;
+    deleteUser: () => {
+      return initialState;
     },
   },
 });

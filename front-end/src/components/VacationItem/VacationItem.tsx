@@ -1,15 +1,17 @@
 import { type FC } from "react";
 import moment from "moment";
 import { Chip } from "@mui/material";
+import Card from "@mui/material/Card";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { removeVacation } from "store/vacationSlice";
+import { Box } from "@mui/system";
+import CardContent from "@mui/material/CardContent";
+
 import { useAppDispatch } from "hooks/hooks";
 import type { Vacation } from "store/types/vacation";
+import { removeVacation } from "store/vacationSlice";
+import { deleteVacationById } from "services/api";
 import styles from "./VacationItem.module.scss";
-import { Box } from "@mui/system";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 
 interface VacationItemProps {
   item: Vacation;
@@ -17,9 +19,9 @@ interface VacationItemProps {
 }
 
 const statusColorMap = {
-  pending: "warning",
-  approved: "success",
-  declined: "error",
+  PENDING: "warning",
+  APPROVED: "success",
+  DECLINED: "error",
 };
 
 const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
@@ -31,11 +33,17 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
   };
 
   const onDelete = () => {
-    dispatch(removeVacation(id));
+    deleteVacationById(id)
+      .then((data) => {
+        dispatch(removeVacation(id));
+      })
+      .catch((e) => {
+        console.log("Error", e);
+      });
   };
 
   const deleteButton = (
-    <IconButton onClick={onDelete} sx={{ ml: { xs: 4 } }}>
+    <IconButton onClick={onDelete} sx={{ ml: { xs: 4 } }} className={styles.delete}>
       <DeleteIcon />
     </IconButton>
   );
@@ -66,7 +74,7 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
       <Box sx={{ display: { xs: "block", sm: "none" } }}>
         <Card variant="outlined" sx={{ mb: 2 }}>
           <CardContent className={styles.mobile}>
-            <div>
+            <div style={{marginRight: 10}}>
               <div className={styles.firstRow}>{dateBlock}</div>
               <div className={styles.secondRow}>
                 <Chip label={type} size="small" color="info" />

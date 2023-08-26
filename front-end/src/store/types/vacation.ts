@@ -1,4 +1,4 @@
-export type VacationStatus = "pending" | "approved" | "declined";
+export type VacationStatus = "DECLINED" | "PENDING" | "APPROVED";
 export type VacationType = "vacation" | "day-off";
 
 export interface Vacation {
@@ -7,4 +7,12 @@ export interface Vacation {
   endDate: string;
   status: VacationStatus;
   type: VacationType;
+  _links?: {
+    self: {
+      href: string;
+    };
+    user: {
+      href: string;
+    };
+  };
 }

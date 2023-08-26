@@ -8,6 +8,11 @@
   border-top-left-radius: 6px;
 }
 
-.rct-calendar-header, .rct-header-root {
+.rct-calendar-header,
+.rct-header-root {
   border-top-right-radius: 6px;
+}
+
+div.rct-sidebar-row {
+  padding-left: 8px !important;
 }

@@ -1,18 +1,40 @@
-import { type FC, useState, useCallback, useMemo } from "react";
+import { type FC, useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import Calendar from "reactjs-availability-calendar";
 import moment from "moment";
 
-import { useAppSelector } from "hooks/hooks";
-import { VacationList, VacationCards, DatePickerDialog, CustomTimeline } from "components";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
+import {
+  VacationList,
+  VacationCards,
+  DatePickerDialog,
+  CustomTimeline,
+} from "components";
 import styles from "./Dashboard.module.scss";
+import { getVacationRequestByUserId } from "services/api";
+import { initVacations } from "store/vacationSlice";
+import { Vacation } from "store/types/vacation";
 
 const Dashboard: FC = () => {
   const vacations = useAppSelector((state) => state.vacations.vacations);
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const userId = user?._links?.self.href.split("/").pop();
+    if (!userId) return;
+    getVacationRequestByUserId(userId).then((res) => {
+      const vacations = res.map((item: Vacation) => ({
+        ...item,
+        id: item?._links?.self.href.split("/").pop(),
+        type: "vacation",
+      }));
+      dispatch(initVacations(vacations));
+    });
+  }, [user]);
 
   const marked = useMemo(() => {
     return vacations.map((el) => {
@@ -29,10 +51,11 @@ const Dashboard: FC = () => {
       availabilityOfTimeOff: { vacation, dayOff } = { vacation: 0, dayOff: 0 },
     } = user;
 
+    console.log("Vac", vacations);
     const bookedDurations = vacations.reduce(
       (acc, el) => {
         const { type, endDate, startDate } = el;
-        const durationInDays = moment(endDate).diff(moment(startDate), "days");
+        const durationInDays = moment(endDate).diff(moment(startDate), "days") + 1;
         acc[type] = acc[type] + durationInDays;
         return acc;
       },
@@ -100,8 +123,10 @@ const Dashboard: FC = () => {
 
       <DatePickerDialog
         open={isDialogOpen}
+        user={user}
         onClose={handleDialogClose}
         title={"Request new Vacation"}
+        available = {timesOffData.map(v=>v.available)}
       />
     </div>
   );

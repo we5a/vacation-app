@@ -69,3 +69,15 @@
 .cell {
   padding: 0 !important;
 }
+
+.PENDING {
+  background-color: $warning !important;
+}
+
+.APPROVED {
+  background-color: $green500 !important;
+}
+
+.DECLINED {
+  background-color: $red600 !important;
+}

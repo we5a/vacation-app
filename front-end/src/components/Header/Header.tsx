@@ -1,4 +1,4 @@
-import { FC, useState, MouseEvent } from "react";
+import { FC, useState, MouseEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
@@ -7,14 +7,35 @@ import LogoIcon from "assets/images/logo64.png";
 import { Box } from "@mui/system";
 
 import styles from "./Header.module.scss";
-import { useAppSelector } from "hooks/hooks";
+import { useAppDispatch, useAppSelector } from "hooks/hooks";
 import { googleLogout } from "@react-oauth/google";
+import { deleteUser } from "store/userSlice";
+import { getDataByUrl } from "services/api";
+import { clearVacations } from "store/vacationSlice";
+import { deleteLocalUser } from "services/utils";
 
 const Header: FC = () => {
+  const [organization, setOrganization] = useState<{
+    name: string;
+    subscripton: string;
+  }>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const getOrgName = async (url: string) => {
+    const data = await getDataByUrl(url);
+    setOrganization(data);
+  };
+
+  useEffect(() => {
+    const orgUrl = user?._links?.organization?.href;
+    if (orgUrl) {
+      getOrgName(orgUrl);
+    }
+  }, [user]);
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
@@ -25,12 +46,17 @@ const Header: FC = () => {
   };
 
   const handleLogout = () => {
+    dispatch(deleteUser());
+    dispatch(clearVacations());
     googleLogout();
     navigate("/login");
+    deleteLocalUser();
   };
 
   const handleOrganization = () => {
-    navigate("/organization");
+    if (user.role === 'MANAGER') {
+      navigate("/organization");
+    }
   };
 
   return (
@@ -49,11 +75,14 @@ const Header: FC = () => {
         </Box>
 
         <h4 className={styles.organization} onClick={handleOrganization}>
-          Your organization name
+          {organization &&
+            `${
+              organization.name
+            } (${organization?.subscripton?.toLowerCase()} plan)`}
         </h4>
         <div className={styles.userBlock} onClick={handleClick}>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-          <span className={styles.userBlock__email}>{user.email}</span>
+            <span className={styles.userBlock__email}>{user?.email}</span>
           </Box>
           <AccountCircleIcon className={styles.userIcon} />
         </div>

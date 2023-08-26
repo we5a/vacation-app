@@ -54,7 +54,9 @@ const Header: FC = () => {
   };
 
   const handleOrganization = () => {
-    navigate("/organization");
+    if (user.role === 'MANAGER') {
+      navigate("/organization");
+    }
   };
 
   return (

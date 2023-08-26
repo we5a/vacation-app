@@ -94,29 +94,9 @@ const Organization = () => {
       });
     });
   };
-
-  //
-  // const items = [
-  //   // each item is a vacation for the user
-  //   {
-  //     id: 2,
-  //     group: "1", // group means userId
-  //     title: "vacation",
-  //     start_time: moment("2023-08-25", "YYYY-MM-DD"),
-  //     end_time: moment("2023-09-11", "YYYY-MM-DD"),
-  //   },
-  //   {
-  //     id: 3,
-  //     group: "2",
-  //     title: "vacation",
-  //     start_time: moment("2023-09-05", "YYYY-MM-DD"),
-  //     end_time: moment("2023-09-17", "YYYY-MM-DD"),
-  //   },
-  // ];
-
+  
   const items = useMemo(() => {
     return vacations.map((vacation: any) => {
-      console.log("VAca", vacation);
       const {
         vacationId,
         userId,
@@ -137,8 +117,6 @@ const Organization = () => {
       };
     });
   }, [vacations, users]);
-
-  console.log("Prepared vacations", items);
 
   const onRequestAction = (vacation: Vacation, newStatus: VacationStatus) => {
     const { _links, startDate, endDate } = vacation;

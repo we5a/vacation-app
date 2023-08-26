@@ -100,8 +100,6 @@ const Dashboard: FC = () => {
     setIsCalendarOpen((prev: boolean) => !prev);
   };
 
-  console.log("TT", timesOffData);
-
   return (
     <div className={styles.dashboard}>
       <VacationCards

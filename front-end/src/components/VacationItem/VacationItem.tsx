@@ -43,7 +43,7 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
   };
 
   const deleteButton = (
-    <IconButton onClick={onDelete} sx={{ ml: { xs: 4 } }}>
+    <IconButton onClick={onDelete} sx={{ ml: { xs: 4 } }} className={styles.delete}>
       <DeleteIcon />
     </IconButton>
   );
@@ -74,7 +74,7 @@ const VacationItem: FC<VacationItemProps> = ({ item, number }) => {
       <Box sx={{ display: { xs: "block", sm: "none" } }}>
         <Card variant="outlined" sx={{ mb: 2 }}>
           <CardContent className={styles.mobile}>
-            <div>
+            <div style={{marginRight: 10}}>
               <div className={styles.firstRow}>{dateBlock}</div>
               <div className={styles.secondRow}>
                 <Chip label={type} size="small" color="info" />

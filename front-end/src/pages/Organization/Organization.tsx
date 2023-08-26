@@ -106,10 +106,7 @@ const Organization = () => {
         id: Number.parseInt(vacationId),
         group: Number.parseInt(userId),
         start_time: moment(startDate, "YYYY-MM-DD"),
-        end_time:
-          endDate === startDate
-            ? moment(endDate, "YYYY-MM-DD").add(24, "hours")
-            : moment(endDate, "YYYY-MM-DD"),
+        end_time: moment(endDate, "YYYY-MM-DD").add(24, "hours"),
         title: "vacation",
         itemProps: {
           className: styles[`${status}`],
